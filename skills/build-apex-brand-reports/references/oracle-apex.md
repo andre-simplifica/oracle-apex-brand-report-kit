@@ -8,6 +8,8 @@ The primary runtime is a native Dynamic Content region. Its source must directly
 
 Confirm the real APEX version, database version, application ID, page ID, parsing schema, existing package ownership, page-item contract, authorization scheme, locale, timezone, DEV connection, lock policy, and Page Designer/export policy. Inspect sibling components before choosing templates. Do not compile or modify APEX from the scaffold.
 
+For an operational dashboard or visual modernization, read [operational-dashboard-visual-system.md](operational-dashboard-visual-system.md). Inspect the actual rendered DOM and the package that emits it before deciding that CSS overrides are sufficient. Preserve queries, links, authorization, and metrics, but replace legacy component anatomy when it prevents the approved hierarchy.
+
 ## PL/SQL runtime
 
 - Keep package spec and body separate.
@@ -15,6 +17,7 @@ Confirm the real APEX version, database version, application ID, page ID, parsin
 - Use temporary CLOBs and `DBMS_LOB.WRITEAPPEND` for large output. Keep VARCHAR2 chunks within PL/SQL limits.
 - Escape untrusted text with `APEX_ESCAPE.HTML`, escape attributes with `APEX_ESCAPE.HTML_ATTRIBUTE`, validate URL schemes, and whitelist enum-like configuration.
 - Keep CSS beneath a runtime root class and avoid global selectors.
+- Express reusable card tones through scoped CSS custom properties or semantic classes. Resolve those properties from the consumer theme; never hardcode the palette of an experience-reference application.
 - Bind JavaScript once per root, tolerate repeated initialization, and listen for `apexafterrefresh` without duplicating listeners.
 - Return business-safe empty and error states. Log sanitized diagnostics through the consumer's approved mechanism; never expose raw exceptions.
 - Supply `p_toolbar_html` only for trusted, project-owned custom markup. Escape every dynamic label or attribute before composing it; never pass database or page-item text through as raw HTML.

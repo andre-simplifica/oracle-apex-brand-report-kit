@@ -12,6 +12,7 @@ description: Build, install, update, maintain, and validate branded Oracle APEX 
 3. Treat inspection, planning, repository edits, database compilation, Page Designer changes, and publication as separate authorization boundaries.
 4. Never invent packages, tables, columns, page items, APIs, permissions, queries, or business rules.
 5. Keep the source of brand truth explicit. Do not derive a theme from legacy APEX screens when the user names an official source.
+6. Separate **brand identity** from **product experience**. Colors, typography, logos, and assets come from the authorized brand source; component anatomy, density, hierarchy, and interaction grammar may come from a separately approved product reference. Record both sources and never let a legacy DOM silently dictate the new design.
 
 Read [architecture.md](references/architecture.md) before designing or changing layer boundaries. Read [security.md](references/security.md) for every task.
 
@@ -27,6 +28,7 @@ Read [architecture.md](references/architecture.md) before designing or changing 
 ## Route the task
 
 - For brand extraction, source navigation, asset licensing, token provenance, and responsive evidence, read [brand-extraction.md](references/brand-extraction.md).
+- For operational dashboards, KPI surfaces, cards, section hierarchy, responsive composition, tooltips, and visual modernization, read [operational-dashboard-visual-system.md](references/operational-dashboard-visual-system.md).
 - For PL/SQL packages, `RETURN CLOB`, Dynamic Content, thin modal pages, Page Designer, partial refresh, and authorization placement, read [oracle-apex.md](references/oracle-apex.md).
 - For A4 portrait/landscape, browser print, PDF generation, page breaking, and page-by-page inspection, read [print-and-pdf.md](references/print-and-pdf.md).
 - For `APEX_EXEC`, `APEX_DATA_EXPORT`, XLSX/CSV typing, spreadsheet injection, and workbook inspection, read [excel-export.md](references/excel-export.md).
@@ -39,9 +41,11 @@ Read [architecture.md](references/architecture.md) before designing or changing 
 ## Create a new implementation
 
 1. Inspect the official identity source completely with the tools appropriate to its format. Record pages, sections, states, viewports, assets, licenses, and limitations.
-2. Create a consumer-owned `brand-profile` that validates against `schemas/brand-profile.schema.json`. Preserve provenance for every important token and asset decision.
-3. Create a `report-profile` that validates against `schemas/report-profile.schema.json`. Set package names only after confirming they exist or are explicitly authorized.
-4. Review both profiles against the versioned schemas. If the optional Python tooling is available, add deterministic validation and a write-free scaffold preview:
+2. When the user also names an approved application or dashboard as an experience reference, inspect its rendered states and real component implementation separately. Extract reusable composition and interaction rules without copying its brand, data, or business language.
+3. Write the visual-system specification before implementation: identity tokens, component anatomy, information hierarchy, responsive layout, semantic accents, focus/tooltip behavior, reduced motion, and the explicit legacy patterns that must not survive.
+4. Create a consumer-owned `brand-profile` that validates against `schemas/brand-profile.schema.json`. Preserve provenance for every important token and asset decision.
+5. Create a `report-profile` that validates against `schemas/report-profile.schema.json`. Set package names only after confirming they exist or are explicitly authorized.
+6. Review both profiles against the versioned schemas. If the optional Python tooling is available, add deterministic validation and a write-free scaffold preview:
 
    ```bash
    python skills/build-apex-brand-reports/scripts/validate_theme.py brand-profile.json
@@ -49,13 +53,13 @@ Read [architecture.md](references/architecture.md) before designing or changing 
      --target /path/to/project --config report-kit.yaml --platform apex --dry-run
    ```
 
-5. With or without the scripts, review the complete target file list and diffs before writing. Apply only when the target and ownership are correct.
-6. Keep engine, theme, document composition, and business content in separate files and package responsibilities.
-7. Implement the public report function in the confirmed consumer-owned domain package. Keep queries, filters, metrics, organizational scope, and permission checks there.
-8. If a chart was explicitly requested, let the same domain package produce its authorized ChartSpec and embed `PK_APEX_ECHARTS` output in the report CLOB. Require one approved `RUNTIME_ONLY` loader and an essential textual or tabular fallback; do not emit `<script src>` or bundle bytes.
-9. Configure the mandatory native Dynamic Content region through Page Designer. A thin modal page is the default host unless the project explicitly authorizes another native APEX page route.
-10. Implement XLSX/CSV as separate server-side processes only after confirming the real APEX API version and query types.
-11. Compile or publish only when explicitly authorized by the request and local policy. Acquire and release project locks when required.
+7. With or without the scripts, review the complete target file list and diffs before writing. Apply only when the target and ownership are correct.
+8. Keep engine, theme, document composition, and business content in separate files and package responsibilities.
+9. Implement the public report function in the confirmed consumer-owned domain package. Keep queries, filters, metrics, organizational scope, and permission checks there.
+10. If a chart was explicitly requested, let the same domain package produce its authorized ChartSpec and embed `PK_APEX_ECHARTS` output in the report CLOB. Require one approved `RUNTIME_ONLY` loader and an essential textual or tabular fallback; do not emit `<script src>` or bundle bytes.
+11. Configure the mandatory native Dynamic Content region through Page Designer. A thin modal page is the default host unless the project explicitly authorizes another native APEX page route.
+12. Implement XLSX/CSV as separate server-side processes only after confirming the real APEX API version and query types.
+13. Compile or publish only when explicitly authorized by the request and local policy. Acquire and release project locks when required.
 
 ## Install
 
@@ -74,7 +78,7 @@ Change the central runtime only for behavior reusable across consumers. Change a
 1. Run the official skill validator and repository tests when their tooling is available; otherwise perform the equivalent contract review and report the omitted automation.
 2. Validate the scaffold, schemas, placeholders, managed-file checksums, sensitive-data scan, and package artifact with the strongest available tools.
 3. Exercise initial creation, dry-run, overwrite protection, force, update, theme/business preservation, and conflict detection.
-4. Inspect desktop, tablet, mobile, narrow layout, keyboard focus, partial refresh, and reduced motion.
+4. Inspect desktop, tablet, mobile, narrow layout, keyboard focus, partial refresh, and reduced motion. For dashboards, also verify that related KPIs read as one hierarchy, four-item groups do not leave an orphan card at wide widths, and kicker/title/summary lines do not repeat one another.
 5. Produce real portrait, landscape, and long-table PDFs; render every page to images and inspect every image.
 6. Produce a real XLSX; inspect sheet name, headers, rows, columns, native numbers, native dates, accents, formulas, filters, and unsafe leading characters.
 7. Test an empty state and a safe error state. Never expose raw Oracle/APEX errors to end users.

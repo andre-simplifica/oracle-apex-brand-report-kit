@@ -1,10 +1,12 @@
-# Validation evidence for v0.1.2
+# Validation evidence for v0.2.0
+
+Version 0.2.0 adds instruction/reference layers for operational-dashboard composition and optional Oracle APEX ECharts interoperability. It does not change the recorded synthetic runtime, PDF, or XLSX artifacts below. Repository tests verify that both references are packaged and routed without making ECharts part of the core runtime; consumer-side APEX runtime validation remains mandatory.
 
 ## Automated
 
 ```text
 python -m unittest discover -s tests -v
-27 tests passed
+29 tests passed
 
 python skill-creator/scripts/quick_validate.py skills/build-apex-brand-reports
 Skill is valid!
