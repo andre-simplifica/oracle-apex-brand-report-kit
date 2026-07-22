@@ -223,6 +223,22 @@ class ScaffoldTests(unittest.TestCase):
             run_script("scaffold_project.py", "--target", target, "--config", config)
             run_script("validate_scaffold.py", target)
 
+    def test_validation_is_scoped_to_manifest_declared_files(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            fixture = Path(tmp) / "fixture"
+            fixture.mkdir()
+            config = copy_config_fixture(fixture)
+            target = Path(tmp) / "consumer"
+            run_script("scaffold_project.py", "--target", target, "--config", config)
+            legacy = target / "legacy" / "unrelated-template.sql"
+            legacy.parent.mkdir(parents=True)
+            legacy.write_text(
+                "select '{{LEGITIMATE_LEGACY_PLACEHOLDER}}' from dual;\n" +
+                "password = \"" + "legacy-value-not-owned-by-this-kit" + "\"\n",
+                encoding="utf-8",
+            )
+            run_script("validate_scaffold.py", target)
+
     def test_config_fields_and_brand_tokens_are_operational(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             fixture = Path(tmp) / "fixture"

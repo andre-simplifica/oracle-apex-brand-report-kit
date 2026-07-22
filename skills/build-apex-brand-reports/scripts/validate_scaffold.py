@@ -23,27 +23,32 @@ def validate_scaffold(root: Path) -> list[str]:
     except (OSError, RuntimeError, ValueError) as exc:
         return [str(exc)]
 
+    declared_files: list[Path] = [manifest_path]
     for owner in ("engine", "theme"):
         for entry in manifest["managed_files"][owner]:
             path = root / safe_relative(entry["path"])
+            declared_files.append(path)
             if not path.is_file():
                 errors.append(f"Missing {owner}-managed file: {entry['path']}")
             elif sha256_file(path) != entry["sha256"]:
                 errors.append(f"Checksum mismatch: {entry['path']}")
 
     for relative in manifest["project_files"]:
-        if not (root / safe_relative(relative)).is_file():
+        path = root / safe_relative(relative)
+        declared_files.append(path)
+        if not path.is_file():
             errors.append(f"Missing project-owned file: {relative}")
 
     placeholder = re.compile(r"\{\{[A-Z0-9_]+\}\}")
-    for path in root.rglob("*"):
-        if path.is_file() and path.suffix.lower() in {".sql", ".pks", ".pkb", ".md", ".js", ".css", ".json", ".yaml", ".yml"}:
-            try:
-                text = path.read_text(encoding="utf-8")
-            except UnicodeDecodeError:
-                continue
-            if placeholder.search(text):
-                errors.append(f"Unresolved placeholder: {path.relative_to(root)}")
+    for path in dict.fromkeys(declared_files):
+        if not path.is_file() or path.suffix.lower() not in {".sql", ".pks", ".pkb", ".md", ".js", ".css", ".json", ".yaml", ".yml"}:
+            continue
+        try:
+            text = path.read_text(encoding="utf-8")
+        except UnicodeDecodeError:
+            continue
+        if placeholder.search(text):
+            errors.append(f"Unresolved placeholder: {path.relative_to(root)}")
 
     for entry in manifest["managed_files"]["engine"]:
         path = root / safe_relative(entry["path"])
@@ -52,7 +57,9 @@ def validate_scaffold(root: Path) -> list[str]:
             if re.search(r"\b(select|insert|update|delete|merge)\b", text):
                 errors.append(f"Business SQL found in engine-managed file: {entry['path']}")
 
-    errors.extend(scan(root))
+    for path in dict.fromkeys(declared_files):
+        if path.is_file():
+            errors.extend(scan(path))
     return errors
 
 
