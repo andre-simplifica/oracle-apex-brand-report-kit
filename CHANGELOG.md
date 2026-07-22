@@ -4,6 +4,17 @@ All notable changes follow [Keep a Changelog](https://keepachangelog.com/en/1.1.
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-07-22
+
+### Added
+
+- Added a brand-neutral operational-dashboard visual system for KPI surfaces, compact cards, semantic accents, section language, tooltips, and responsive `4 -> 2 -> 1` composition.
+
+### Changed
+
+- Separated official brand extraction from approved product-experience references so a consumer can inherit modern component grammar without copying another application's identity, data, or business rules.
+- Required agents to inspect the emitted DOM and replace legacy component anatomy when a CSS-only reskin would preserve the wrong hierarchy.
+
 ## [0.1.2] - 2026-07-22
 
 ### Changed
@@ -33,7 +44,8 @@ All notable changes follow [Keep a Changelog](https://keepachangelog.com/en/1.1.
 - Synthetic responsive example, portrait/landscape PDFs, rendered page images, and a typed XLSX workbook.
 - Automated structure, security, scaffold, schema, packaging, and artifact tests.
 
-[Unreleased]: https://github.com/andre-simplifica/oracle-apex-brand-report-kit/compare/v0.1.2...HEAD
+[Unreleased]: https://github.com/andre-simplifica/oracle-apex-brand-report-kit/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/andre-simplifica/oracle-apex-brand-report-kit/releases/tag/v0.2.0
 [0.1.2]: https://github.com/andre-simplifica/oracle-apex-brand-report-kit/releases/tag/v0.1.2
 [0.1.1]: https://github.com/andre-simplifica/oracle-apex-brand-report-kit/releases/tag/v0.1.1
 [0.1.0]: https://github.com/andre-simplifica/oracle-apex-brand-report-kit/releases/tag/v0.1.0

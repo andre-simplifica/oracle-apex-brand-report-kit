@@ -1,4 +1,6 @@
-# Validation evidence for v0.1.2
+# Validation evidence for v0.2.0
+
+Version 0.2.0 adds an instruction/reference layer for operational-dashboard composition. It does not change the recorded synthetic runtime, PDF, or XLSX artifacts below. Repository tests verify that the new reference is packaged and that the skill routes dashboard work through it; consumer-side APEX runtime validation remains mandatory.
 
 ## Automated
 

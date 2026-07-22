@@ -70,6 +70,16 @@ class SkillTests(unittest.TestCase):
         self.assertNotIn("Run Python commands", generic)
         self.assertIn("Python is not a prerequisite", agent_native)
 
+    def test_operational_dashboard_visual_system_is_routed_and_packaged(self) -> None:
+        skill = (SKILL / "SKILL.md").read_text(encoding="utf-8")
+        reference_path = SKILL / "references" / "operational-dashboard-visual-system.md"
+        reference = reference_path.read_text(encoding="utf-8")
+        self.assertIn("operational-dashboard-visual-system.md", skill)
+        self.assertIn("Separate **brand identity** from **product experience**", skill)
+        self.assertIn("Prefer surfaces over card mosaics", reference)
+        self.assertIn("4 -> 2 -> 1", reference)
+        self.assertIn("a section kicker repeats its title", reference)
+
     def test_release_metadata_matches_current_skill_version(self) -> None:
         kit_source = (SCRIPTS / "_kit.py").read_text(encoding="utf-8")
         version_match = re.search(r'^SKILL_VERSION = "([^"]+)"$', kit_source, re.MULTILINE)
@@ -103,6 +113,7 @@ class SkillTests(unittest.TestCase):
                 self.assertIn("build-apex-brand-reports/SKILL.md", names)
                 self.assertIn("build-apex-brand-reports/requirements.txt", names)
                 self.assertIn("build-apex-brand-reports/assets/schemas/report-profile.schema.json", names)
+                self.assertIn("build-apex-brand-reports/references/operational-dashboard-visual-system.md", names)
 
 
 class SchemaAndThemeTests(unittest.TestCase):
@@ -171,7 +182,7 @@ class ScaffoldTests(unittest.TestCase):
             run_script("validate_scaffold.py", target)
             manifest = json.loads((target / ".apex-brand-report-kit" / "installation-manifest.json").read_text(encoding="utf-8"))
             self.assertEqual(manifest["runtime_version"], "0.1.1")
-            self.assertEqual(manifest["skill_version"], "0.1.2")
+            self.assertEqual(manifest["skill_version"], "0.2.0")
             self.assertEqual(manifest["theme"], {"id": "acme-harbor", "version": "1.0.0"})
             self.assertEqual(len(manifest["managed_files"]["engine"]), 4)
             self.assertEqual(len(manifest["managed_files"]["theme"]), 4)
