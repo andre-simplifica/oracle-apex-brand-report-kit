@@ -1,0 +1,33 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - name: Install dependencies
+        run: |
+          python -m pip install --requirement requirements.txt
+          sudo apt-get update
+          sudo apt-get install --yes poppler-utils
+      - name: Run tests
+        run: python -m unittest discover -s tests -v
+      - name: Package skill
+        run: python skills/build-apex-brand-reports/scripts/package_skill.py --output dist/build-apex-brand-reports-0.1.0.zip
+      - uses: actions/upload-artifact@v4
+        with:
+          name: build-apex-brand-reports-0.1.0
+          path: dist/build-apex-brand-reports-0.1.0.zip
+          if-no-files-found: error

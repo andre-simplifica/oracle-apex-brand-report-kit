@@ -1,0 +1,24 @@
+name: Feature request
+description: Propose a reusable engine, theme, document, or validation improvement
+title: "[Feature]: "
+labels: [enhancement]
+body:
+  - type: dropdown
+    id: layer
+    attributes:
+      label: Layer
+      options: [Technical engine, Visual theme, Document structure, Validation, Adapters, Other]
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: Reusable problem
+    validations:
+      required: true
+  - type: textarea
+    id: outcome
+    attributes:
+      label: Desired outcome and acceptance evidence
+    validations:
+      required: true

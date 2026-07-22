@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Acme Harbor synthetic operations report</title>
+  <style>
+    :root{color-scheme:light}*{box-sizing:border-box}body{background:#eef5f7;color:#172033;font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;margin:0;padding:20px}
+    .abrk-demo{--primary:#123c69;--primary-text:#fff;--mint:#63c7b2;--surface:#fff;--text:#172033;--muted:#526079;--border:#d8deea;--danger:#b42318;--success:#067647;max-width:1180px;margin:auto;isolation:isolate}
+    .abrk-demo *{box-sizing:border-box}.abrk-demo button,.abrk-demo select{font:inherit}.toolbar{align-items:center;background:var(--surface);border:1px solid var(--border);border-radius:14px;display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end;margin-bottom:12px;padding:9px;position:sticky;top:8px;z-index:10}
+    .toolbar label{align-items:center;display:flex;gap:6px;margin-right:auto}.toolbar select{border:1px solid var(--border);border-radius:8px;min-height:40px;padding:6px 9px}.action{background:var(--primary);border:1px solid var(--primary);border-radius:9px;color:var(--primary-text);cursor:pointer;min-height:40px;padding:8px 13px}.action.secondary{background:#fff;color:var(--text)}.action:focus-visible,.toolbar select:focus-visible{outline:3px solid #326fd1;outline-offset:2px}.action[disabled]{cursor:not-allowed;opacity:.55}
+    .report-document{min-width:0;width:100%}.report-header{background:#e8f0f7;border:1px solid var(--border);border-radius:18px;margin-bottom:16px;overflow:hidden;padding:20px}.report-header.hero{background:linear-gradient(135deg,#123c69,#1d5b91);color:#fff;padding:30px}.report-header.band{border-radius:0;border-width:0 0 5px;border-color:var(--mint);padding:16px 20px}.report-header.compact{padding:11px 15px}.report-header.text{background:transparent;border:0;border-radius:0;padding:0 0 12px}.report-header.none{display:none}.identity{align-items:center;display:flex;gap:18px}.identity img{background:#fff;border-radius:10px;height:58px;padding:7px;width:194px}.eyebrow{color:var(--mint);font-size:.72rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase}.report-header:not(.hero) .eyebrow{color:var(--primary)}h1{font-size:clamp(1.6rem,3.4vw,2.6rem);line-height:1.08;margin:4px 0}.subtitle{color:inherit;margin:6px 0 0;opacity:.83}.context{font-size:.82rem;margin:7px 0 0;opacity:.78}
+    .report-body{display:grid;gap:16px}.section{background:var(--surface);border:1px solid var(--border);border-radius:15px;padding:18px;box-shadow:0 8px 24px rgba(18,60,105,.06)}.section.atomic{break-inside:avoid;page-break-inside:avoid}.section h2{font-size:1.12rem;margin:0 0 13px}.brand-band{background:linear-gradient(90deg,var(--primary),var(--mint));border-radius:4px;height:5px}.indicators{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(min(100%,175px),1fr))}.indicator{background:#f5f8fb;border-left:4px solid var(--primary);border-radius:10px;padding:14px;break-inside:avoid}.indicator.success{border-color:var(--success)}.indicator.warning{border-color:#b54708}.indicator-label{color:var(--muted);font-size:.78rem}.indicator-value{font-size:1.65rem;font-weight:800;line-height:1.12;margin-top:5px}.indicator-note{color:var(--muted);font-size:.78rem;margin-top:5px}.cards{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr))}.card{border:1px solid var(--border);border-radius:13px;padding:15px;break-inside:avoid}.card h3{margin:0 0 7px}.card p{color:var(--muted);margin:0}.table-wrap{max-width:100%;overflow:auto}.data-table{border-collapse:collapse;font-variant-numeric:tabular-nums;width:100%}.data-table caption{font-weight:750;padding:0 0 9px;text-align:left}.data-table th,.data-table td{border-bottom:1px solid var(--border);padding:8px 10px;text-align:left;vertical-align:top}.data-table th{background:#e8f0f7;font-size:.78rem}.data-table thead{display:table-header-group}.data-table tr{break-inside:avoid;page-break-inside:avoid}.data-table td.number{text-align:right}.status{border-radius:999px;display:inline-block;font-size:.72rem;font-weight:750;padding:3px 8px}.status.good{background:#ecfdf3;color:#067647}.status.watch{background:#fff7ed;color:#b54708}.note{background:#f5f8fb;border-left:4px solid var(--mint);border-radius:8px;padding:13px}.note strong{display:block}.note p{margin:4px 0 0}.report-footer{color:var(--muted);font-size:.72rem;margin-top:12px;padding:8px 0}.footer-line{display:flex;flex-wrap:wrap;gap:8px 18px;justify-content:space-between}
+    @media(max-width:720px){body{padding:10px}.toolbar{position:static}.toolbar label{flex-basis:100%}.action{flex:1 1 auto}.identity{align-items:flex-start;flex-direction:column}.report-header.hero{padding:22px}.section{padding:14px}.data-table{min-width:680px}}
+    @media(prefers-reduced-motion:reduce){.abrk-demo *{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}
+    @media print{@page{size:A4 portrait;margin:13mm}body{background:#fff;padding:0}.toolbar{display:none!important}.abrk-demo{max-width:none}.repeat-shell{border-collapse:collapse;table-layout:fixed;width:100%}.repeat-shell>thead{display:table-header-group}.repeat-shell>tfoot{display:table-footer-group}.repeat-cell{max-width:0;padding:0;width:100%}.report-header{border-radius:0;margin-bottom:5mm}.section{box-shadow:none}.table-wrap{overflow:visible}.abrk-demo[data-long="true"] .table-section{border:0;border-radius:0;padding:0}.report-footer{margin-top:4mm}.abrk-demo[data-orientation="landscape"] .data-table{font-size:9pt}.abrk-demo[data-long="false"] .table-section{break-inside:avoid-page;page-break-inside:avoid}}
+    .report-body>*{min-width:0}.table-wrap{width:100%}
+  </style>
+</head>
+<body>
+<div class="abrk-demo" data-abrk-root data-orientation="portrait">
+  <div class="toolbar" role="toolbar" aria-label="Report actions">
+    <label>Header <select id="variant"><option>hero</option><option>band</option><option>compact</option><option>text</option><option>none</option></select></label>
+    <button class="action secondary" type="button" data-action="fullscreen">Full screen</button>
+    <button class="action secondary" type="button" data-action="print">Print</button>
+    <button class="action" type="button" data-action="pdf">Save as PDF</button>
+    <a class="action secondary" href="output/acme-harbor-operations.xlsx" style="text-decoration:none">XLSX</a>
+    <button class="action secondary" type="button" disabled>CSV disabled</button>
+  </div>
+  <div class="report-document">
+      <header class="report-header hero" id="report-header">
+        <div class="identity"><img src="source/acme-harbor-mark.svg" alt="Acme Harbor"><div><div class="eyebrow">Operations brief</div><h1>Harbor performance report</h1><p class="subtitle">A synthetic report that exercises responsive, print, PDF, and tabular states.</p><p class="context">Period: 2026-07-01 to 2026-07-22 · Scope: all synthetic terminals</p></div></div>
+      </header>
+    <main class="report-body">
+      <div class="brand-band" aria-hidden="true"></div>
+      <section class="section atomic"><h2>Executive summary</h2><div class="indicators">
+        <article class="indicator success"><div class="indicator-label">On-time movements</div><div class="indicator-value">94.8%</div><div class="indicator-note">+2.1 pp against prior period</div></article>
+        <article class="indicator"><div class="indicator-label">Handled units</div><div class="indicator-value">12,840</div><div class="indicator-note">Native numeric value in XLSX</div></article>
+        <article class="indicator warning"><div class="indicator-label">Watch items</div><div class="indicator-value">7</div><div class="indicator-note">Requires operational review</div></article>
+        <article class="indicator"><div class="indicator-label">Average cycle</div><div class="indicator-value">3h 18m</div><div class="indicator-note">Synthetic duration</div></article>
+      </div></section>
+      <section class="section atomic"><h2>Operational context</h2><div class="cards">
+        <article class="card"><h3>North terminal</h3><p>Stable flow with the highest handled volume.</p></article>
+        <article class="card"><h3>East terminal</h3><p>Two watch items remain within the service window.</p></article>
+        <article class="card"><h3>South terminal</h3><p>Capacity recovered after a synthetic maintenance event.</p></article>
+      </div></section>
+      <section class="section table-section"><h2>Movement detail</h2><div class="table-wrap"><table class="data-table"><caption id="table-caption">Synthetic movement records</caption><thead><tr><th>Date</th><th>Terminal</th><th>Reference</th><th>Status</th><th style="text-align:right">Units</th><th style="text-align:right">Cycle (h)</th></tr></thead><tbody id="rows"></tbody></table></div></section>
+      <section class="section atomic"><h2>Observations</h2><div class="note"><strong>No production data</strong><p>Names, values, dates, and references in this document are synthetic. The value <code>=2+3</code> is exported as safe text in the workbook.</p></div></section>
+    </main>
+    <footer class="report-footer"><div class="footer-line"><span>Acme Harbor · Synthetic example</span><span>Generated 2026-07-22 12:00 UTC by demo.user</span></div></footer>
+  </div>
+</div>
+<script>
+  (function () {
+    "use strict";
+    var root = document.querySelector("[data-abrk-root]");
+    var query = new URLSearchParams(location.search);
+    var orientation = query.get("orientation") === "landscape" ? "landscape" : "portrait";
+    var variant = ["hero","band","compact","text","none"].includes(query.get("variant")) ? query.get("variant") : "hero";
+    var longTable = query.get("long") !== "0";
+    var fullscreenEnabled = query.get("fullscreen") !== "0";
+    var repeatShell = query.get("repeat") === "1" && variant !== "none";
+    root.dataset.orientation = orientation;
+    root.dataset.long = String(longTable);
+    root.dataset.repeatShell = String(repeatShell);
+    document.getElementById("variant").value = variant;
+    document.getElementById("report-header").className = "report-header " + variant;
+    document.querySelector('[data-action="fullscreen"]').hidden = !fullscreenEnabled;
+    var pageStyle = document.createElement("style"); pageStyle.textContent = "@media print{@page{size:A4 " + orientation + ";margin:13mm}}"; document.head.appendChild(pageStyle);
+    var terminals = ["North", "East", "South", "West"]; var statuses = ["On time", "On time", "On time", "Watch"];
+    var requestedRows = Number.parseInt(query.get("rows"), 10);
+    var count = Number.isInteger(requestedRows) ? Math.min(Math.max(requestedRows, 1), 200) : (longTable ? 72 : 8); var rows = [];
+    for (var i = 0; i < count; i += 1) {
+      var status = statuses[i % statuses.length];
+      rows.push("<tr><td>2026-07-" + String((i % 22) + 1).padStart(2,"0") + "</td><td>" + terminals[i % terminals.length] + "</td><td>AH-" + String(1000 + i) + "</td><td><span class=\"status " + (status === "Watch" ? "watch" : "good") + "\">" + status + "</span></td><td class=\"number\">" + (80 + (i * 17) % 240) + "</td><td class=\"number\">" + (2.1 + (i % 8) * 0.35).toFixed(2) + "</td></tr>");
+    }
+    document.getElementById("rows").innerHTML = rows.join("");
+    if (repeatShell) {
+      var documentFlow = root.querySelector(".report-document");
+      var repeatTable = document.createElement("table"); repeatTable.className = "repeat-shell"; repeatTable.setAttribute("role", "presentation");
+      [["thead", documentFlow.querySelector(".report-header")], ["tbody", documentFlow.querySelector(".report-body")], ["tfoot", documentFlow.querySelector(".report-footer")]].forEach(function (entry) {
+        var group = document.createElement(entry[0]); var row = document.createElement("tr"); var cell = document.createElement("td"); cell.className = "repeat-cell";
+        cell.appendChild(entry[1]); row.appendChild(cell); group.appendChild(row); repeatTable.appendChild(group);
+      });
+      documentFlow.replaceWith(repeatTable);
+    }
+    root.addEventListener("click", function (event) {
+      var button = event.target.closest("[data-action]"); if (!button) return;
+      if (button.dataset.action === "print" || button.dataset.action === "pdf") window.print();
+      if (button.dataset.action === "fullscreen") { if (!document.fullscreenElement && root.requestFullscreen) root.requestFullscreen(); else if (document.exitFullscreen) document.exitFullscreen(); }
+    });
+    document.getElementById("variant").addEventListener("change", function (event) { document.getElementById("report-header").className = "report-header " + event.target.value; });
+    window.ABRK_EXAMPLE_READY = true;
+  })();
+</script>
+</body>
+</html>

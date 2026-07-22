@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 48" role="img" aria-labelledby="title desc">
+  <title id="title">Acme Harbor</title>
+  <desc id="desc">Synthetic geometric harbor mark</desc>
+  <rect width="48" height="48" rx="12" fill="#123C69"/>
+  <path d="M10 30c7-7 14-7 21 0 3 3 6 3 9 0v7c-5 4-10 4-15 0-5-4-10-4-15 0z" fill="#63C7B2"/>
+  <path d="M16 25l8-13 8 13h-5l-3-5-3 5z" fill="#FFFFFF"/>
+  <text x="59" y="21" fill="#123C69" font-family="Arial, sans-serif" font-size="14" font-weight="700">ACME</text>
+  <text x="59" y="37" fill="#526079" font-family="Arial, sans-serif" font-size="13">HARBOR</text>
+</svg>

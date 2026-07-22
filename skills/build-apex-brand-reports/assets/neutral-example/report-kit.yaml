@@ -1,0 +1,51 @@
+report_kit:
+  runtime_version: "0.1.0"
+  schema_version: "1.0"
+platform: apex
+packages:
+  engine: PK_ABRK_ENGINE
+  theme: PK_ACME_THEME
+  owner: PK_ACME_REPORTS
+  report_function: FUNC_OPERATIONS_REPORT
+  export_process: PK_ACME_REPORTS.PROC_EXPORT
+apex:
+  application_id: 100
+  modal_page_id: 900
+  authorization_scheme: Authorized synthetic analyst
+  items_to_submit: [P900_PERIOD_FROM, P900_PERIOD_TO]
+theme:
+  id: acme-harbor
+  version: "1.0.0"
+  profile: brand-profile.json
+  source:
+    type: html
+    value: source/brand-reference.html
+  header:
+    variant: hero
+    size: large
+    show_logo: true
+  footer:
+    variant: compact
+  density: comfortable
+features:
+  fullscreen: true
+  print: true
+  pdf: true
+  xlsx: true
+  csv: false
+document:
+  orientation: portrait
+  repeat_table_header: true
+  show_emission_user: true
+  show_emission_datetime: true
+  toolbar: full
+  toolbar_position: above-header
+  content_width: 1180px
+  economy_print: false
+locale:
+  language: en-US
+  timezone: America/New_York
+directories:
+  database: db/report-kit
+  web: web/report-kit
+  documentation: docs/report-kit

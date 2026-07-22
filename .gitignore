@@ -1,0 +1,11 @@
+__pycache__/
+.pytest_cache/
+.DS_Store
+*.pyc
+*.tmp
+.venv/
+dist/*.tmp
+dist/*.zip
+dist/SHA256SUMS
+examples/**/output/*.html.tmp
+examples/**/output/*.inspect.ndjson

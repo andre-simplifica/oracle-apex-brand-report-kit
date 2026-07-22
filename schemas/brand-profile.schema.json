@@ -1,0 +1,159 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://andre-simplifica.github.io/oracle-apex-brand-report-kit/schemas/brand-profile.schema.json",
+  "title": "Oracle APEX Brand Report Kit brand profile",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "theme", "source", "assets", "typography", "colors", "layout", "components", "responsive", "accessibility", "provenance"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "theme": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name", "version", "density"],
+      "properties": {
+        "id": {"type": "string", "pattern": "^[a-z][a-z0-9-]{1,62}$"},
+        "name": {"type": "string", "minLength": 1, "maxLength": 120},
+        "version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"},
+        "density": {"enum": ["compact", "comfortable", "spacious"]},
+        "notes": {"type": "array", "items": {"type": "string", "maxLength": 500}}
+      }
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "value", "extracted_at"],
+      "properties": {
+        "type": {"enum": ["url", "authenticated-app", "html", "website", "pdf", "powerpoint-render", "image", "screenshots", "assets-directory", "brand-manual"]},
+        "value": {"type": "string", "minLength": 1, "maxLength": 2048},
+        "extracted_at": {"type": "string", "format": "date-time"},
+        "scope_reviewed": {"type": "array", "items": {"type": "string", "maxLength": 300}},
+        "limitations": {"type": "array", "items": {"type": "string", "maxLength": 500}}
+      }
+    },
+    "assets": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["logos", "icons", "textures"],
+      "properties": {
+        "logos": {"type": "array", "items": {"$ref": "#/$defs/asset"}},
+        "icons": {"type": "array", "items": {"$ref": "#/$defs/asset"}},
+        "textures": {"type": "array", "items": {"$ref": "#/$defs/asset"}}
+      }
+    },
+    "typography": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["families", "weights", "scale", "fallbacks"],
+      "properties": {
+        "families": {"type": "object", "additionalProperties": {"type": "string", "maxLength": 120}},
+        "fallbacks": {"type": "array", "minItems": 1, "items": {"type": "string", "maxLength": 120}},
+        "weights": {"type": "array", "items": {"type": "integer", "minimum": 100, "maximum": 900, "multipleOf": 50}},
+        "scale": {"type": "object", "additionalProperties": {"type": "string", "pattern": "^[0-9.]+(rem|px)$"}},
+        "line_heights": {"type": "object", "additionalProperties": {"type": ["number", "string"]}}
+      }
+    },
+    "colors": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["primitive", "semantic", "screen", "print"],
+      "properties": {
+        "primitive": {"$ref": "#/$defs/colorMap"},
+        "semantic": {"$ref": "#/$defs/colorMap"},
+        "screen": {"$ref": "#/$defs/colorMap"},
+        "print": {"$ref": "#/$defs/colorMap"}
+      }
+    },
+    "layout": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["spacing", "borders", "radii", "shadows", "content_width", "backgrounds", "gradients"],
+      "properties": {
+        "spacing": {"type": "object", "additionalProperties": {"type": "string", "pattern": "^[0-9.]+(rem|px|mm)$"}},
+        "borders": {"type": "object", "additionalProperties": {"type": "string"}},
+        "radii": {"type": "object", "additionalProperties": {"type": "string"}},
+        "shadows": {"type": "object", "additionalProperties": {"type": "string"}},
+        "content_width": {"type": "string", "pattern": "^[0-9.]+(rem|px|%)$"},
+        "backgrounds": {"type": "object", "additionalProperties": {"type": "string"}},
+        "gradients": {"type": "object", "additionalProperties": {"type": "string"}}
+      }
+    },
+    "components": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["header", "hero", "brand_band", "footer", "cards", "indicators", "tables", "buttons", "toolbar"],
+      "properties": {
+        "header": {"$ref": "#/$defs/component"},
+        "hero": {"$ref": "#/$defs/component"},
+        "brand_band": {"$ref": "#/$defs/component"},
+        "footer": {"$ref": "#/$defs/component"},
+        "cards": {"$ref": "#/$defs/component"},
+        "indicators": {"$ref": "#/$defs/component"},
+        "tables": {"$ref": "#/$defs/component"},
+        "buttons": {"$ref": "#/$defs/component"},
+        "toolbar": {"$ref": "#/$defs/component"}
+      }
+    },
+    "responsive": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["breakpoints", "rules"],
+      "properties": {
+        "breakpoints": {"type": "object", "additionalProperties": {"type": "integer", "minimum": 240, "maximum": 4096}},
+        "rules": {"type": "array", "items": {"type": "string", "maxLength": 500}}
+      }
+    },
+    "accessibility": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["minimum_contrast", "focus_visible", "reduced_motion", "keyboard"],
+      "properties": {
+        "minimum_contrast": {"type": "number", "minimum": 3, "maximum": 21},
+        "focus_visible": {"type": "boolean"},
+        "reduced_motion": {"type": "boolean"},
+        "keyboard": {"type": "boolean"},
+        "observations": {"type": "array", "items": {"type": "string", "maxLength": 500}}
+      }
+    },
+    "provenance": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["token", "source", "license", "decision"],
+        "properties": {
+          "token": {"type": "string", "minLength": 1},
+          "source": {"type": "string", "minLength": 1},
+          "license": {"type": "string", "minLength": 1},
+          "decision": {"type": "string", "minLength": 1}
+        }
+      }
+    }
+  },
+  "$defs": {
+    "asset": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "source", "license", "usage"],
+      "properties": {
+        "id": {"type": "string", "pattern": "^[a-z][a-z0-9-]*$"},
+        "source": {"type": "string", "minLength": 1},
+        "license": {"type": "string", "minLength": 1},
+        "usage": {"type": "string", "minLength": 1},
+        "checksum": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}
+      }
+    },
+    "colorMap": {"type": "object", "minProperties": 1, "additionalProperties": {"type": "string", "pattern": "^#[0-9A-Fa-f]{6}([0-9A-Fa-f]{2})?$"}},
+    "component": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["tokens", "states"],
+      "properties": {
+        "tokens": {"type": "object", "additionalProperties": {"type": ["string", "number", "boolean"]}},
+        "states": {"type": "object", "properties": {"hover": {}, "focus": {}, "active": {}, "disabled": {}}, "additionalProperties": false},
+        "notes": {"type": "array", "items": {"type": "string"}}
+      }
+    }
+  }
+}

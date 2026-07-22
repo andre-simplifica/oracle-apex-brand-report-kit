@@ -1,0 +1,105 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://andre-simplifica.github.io/oracle-apex-brand-report-kit/schemas/report-profile.schema.json",
+  "title": "Oracle APEX Brand Report Kit report profile",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["report_kit", "platform", "packages", "apex", "theme", "features", "document", "locale", "directories"],
+  "properties": {
+    "report_kit": {
+      "type": "object", "additionalProperties": false, "required": ["runtime_version", "schema_version"],
+      "properties": {
+        "runtime_version": {"const": "0.1.0"},
+        "schema_version": {"const": "1.0"}
+      }
+    },
+    "platform": {"const": "apex"},
+    "packages": {
+      "type": "object", "additionalProperties": false, "required": ["engine", "theme", "owner", "report_function"],
+      "properties": {
+        "engine": {"$ref": "#/$defs/oracleIdentifier"},
+        "theme": {"$ref": "#/$defs/oracleIdentifier"},
+        "owner": {"$ref": "#/$defs/oracleIdentifier"},
+        "report_function": {"$ref": "#/$defs/oracleIdentifier"},
+        "export_process": {"type": ["string", "null"], "pattern": "^[A-Za-z][A-Za-z0-9_$#]{0,29}\\.[A-Za-z][A-Za-z0-9_$#]{0,29}$"}
+      }
+    },
+    "apex": {
+      "type": "object", "additionalProperties": false, "required": ["application_id", "modal_page_id", "authorization_scheme"],
+      "properties": {
+        "application_id": {"type": "integer", "minimum": 1},
+        "modal_page_id": {"type": "integer", "minimum": 1},
+        "authorization_scheme": {"type": "string", "minLength": 1, "maxLength": 255},
+        "items_to_submit": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^P[0-9]+_[A-Z0-9_]+$"}}
+      }
+    },
+    "theme": {
+      "type": "object", "additionalProperties": false, "required": ["id", "version", "profile", "source", "header", "footer", "density"],
+      "properties": {
+        "id": {"type": "string", "pattern": "^[a-z][a-z0-9-]{1,62}$"},
+        "version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"},
+        "profile": {"type": "string", "minLength": 1},
+        "source": {
+          "type": "object", "additionalProperties": false, "required": ["type", "value"],
+          "properties": {
+            "type": {"enum": ["url", "authenticated-app", "html", "website", "pdf", "powerpoint-render", "image", "screenshots", "assets-directory", "brand-manual"]},
+            "value": {"type": "string", "minLength": 1}
+          }
+        },
+        "header": {
+          "type": "object", "additionalProperties": false, "required": ["variant", "size", "show_logo"],
+          "properties": {
+            "variant": {"enum": ["none", "text", "band", "compact", "hero"]},
+            "size": {"enum": ["small", "medium", "large"]},
+            "show_logo": {"type": "boolean"}
+          }
+        },
+        "footer": {
+          "type": "object", "additionalProperties": false, "required": ["variant"],
+          "properties": {"variant": {"enum": ["none", "compact", "full"]}}
+        },
+        "density": {"enum": ["compact", "comfortable", "spacious"]}
+      }
+    },
+    "features": {
+      "type": "object", "additionalProperties": false, "required": ["fullscreen", "print", "pdf", "xlsx", "csv"],
+      "properties": {
+        "fullscreen": {"type": "boolean"}, "print": {"type": "boolean"}, "pdf": {"type": "boolean"},
+        "xlsx": {"type": "boolean"}, "csv": {"type": "boolean"}
+      }
+    },
+    "document": {
+      "type": "object", "additionalProperties": false,
+      "required": ["orientation", "repeat_table_header", "show_emission_user", "show_emission_datetime", "toolbar", "toolbar_position", "content_width", "economy_print"],
+      "properties": {
+        "orientation": {"enum": ["portrait", "landscape"]},
+        "repeat_table_header": {"type": "boolean"},
+        "show_emission_user": {"type": "boolean"},
+        "show_emission_datetime": {"type": "boolean"},
+        "toolbar": {"enum": ["none", "compact", "full", "custom"]},
+        "toolbar_position": {"enum": ["above-header", "inside-header", "below-header"]},
+        "content_width": {"type": "string", "pattern": "^[0-9.]+(px|rem|%)$"},
+        "economy_print": {"type": "boolean"}
+      }
+    },
+    "locale": {
+      "type": "object", "additionalProperties": false, "required": ["language", "timezone"],
+      "properties": {
+        "language": {"type": "string", "pattern": "^[a-z]{2}(-[A-Z]{2})?$"},
+        "timezone": {"type": "string", "pattern": "^[A-Za-z_]+(/[A-Za-z_+-]+)+$"}
+      }
+    },
+    "directories": {
+      "type": "object", "additionalProperties": false, "required": ["database", "web", "documentation"],
+      "properties": {
+        "database": {"$ref": "#/$defs/relativePath"},
+        "web": {"$ref": "#/$defs/relativePath"},
+        "documentation": {"$ref": "#/$defs/relativePath"}
+      }
+    }
+  },
+  "$defs": {
+    "oracleIdentifier": {"type": "string", "pattern": "^[A-Za-z][A-Za-z0-9_$#]{0,29}$"},
+    "relativePath": {"type": "string", "pattern": "^(?!/)(?!.*\\.\\.)[A-Za-z0-9_.\\/-]+$"}
+  }
+}
