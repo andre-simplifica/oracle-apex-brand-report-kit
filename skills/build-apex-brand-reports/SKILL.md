@@ -1,6 +1,6 @@
 ---
 name: build-apex-brand-reports
-description: Build, install, update, maintain, and validate branded Oracle APEX reports and dashboards implemented as PL/SQL RETURN CLOB documents, with responsive layouts, A4 print/PDF, thin modal pages, server-side XLSX/CSV exports, and project-owned authorization. Use for extracting an approved visual identity from URLs, authenticated apps, HTML, websites, PDFs, slides, images, screenshots, asset directories, or brand manuals; converting it into versioned theme/report profiles; scaffolding a reusable runtime; or validating browser, print, PDF, and spreadsheet output.
+description: Build, install, update, maintain, and validate branded Oracle APEX reports and dashboards implemented as PL/SQL RETURN CLOB documents, with responsive layouts, A4 print/PDF, thin modal pages, server-side XLSX/CSV exports, and project-owned authorization. Use agent-native tools without requiring Python to extract an approved visual identity from URLs, authenticated apps, HTML, websites, PDFs, slides, images, screenshots, asset directories, or brand manuals; convert it into versioned theme/report profiles; scaffold a reusable runtime; or validate browser, print, PDF, and spreadsheet output.
 ---
 
 # Build APEX Brand Reports
@@ -20,6 +20,7 @@ Read [architecture.md](references/architecture.md) before designing or changing 
 - The mandatory target is a native Oracle APEX Dynamic Content region whose source directly calls a project-owned PL/SQL function that `RETURN`s a `CLOB`.
 - The returned CLOB must contain everything essential to render and operate the report: semantic HTML, scoped CSS, and idempotent JavaScript.
 - Never make the runtime depend on an iframe, external frontend server, CDN, or proprietary plug-in. Treat Static Application Files, Page Designer enhancements, and server-side XLSX/CSV processes as complementary integrations only.
+- Never require Python, PyYAML, `jsonschema`, Poppler, or Git for the generated APEX runtime or for agent-led identity extraction. Treat bundled Python scripts as optional deterministic tooling only.
 - Reject or redesign a scaffold that cannot render its core report when optional external CSS/JavaScript files or export processes are absent.
 
 ## Route the task
@@ -29,6 +30,7 @@ Read [architecture.md](references/architecture.md) before designing or changing 
 - For A4 portrait/landscape, browser print, PDF generation, page breaking, and page-by-page inspection, read [print-and-pdf.md](references/print-and-pdf.md).
 - For `APEX_EXEC`, `APEX_DATA_EXPORT`, XLSX/CSV typing, spreadsheet injection, and workbook inspection, read [excel-export.md](references/excel-export.md).
 - For first installation, manifests, deterministic scaffolding, or release installation, read [installation-and-upgrade.md](references/installation-and-upgrade.md).
+- For creating, installing, or maintaining a consumer without Python, read [agent-native-workflow.md](references/agent-native-workflow.md).
 - For runtime upgrades, conflict handling, theme preservation, or maintenance, read both [architecture.md](references/architecture.md) and [installation-and-upgrade.md](references/installation-and-upgrade.md).
 - For browser, responsive, print, PDF, spreadsheet, security, or forward validation, read [validation.md](references/validation.md) plus the output-specific reference.
 
@@ -37,7 +39,7 @@ Read [architecture.md](references/architecture.md) before designing or changing 
 1. Inspect the official identity source completely with the tools appropriate to its format. Record pages, sections, states, viewports, assets, licenses, and limitations.
 2. Create a consumer-owned `brand-profile` that validates against `schemas/brand-profile.schema.json`. Preserve provenance for every important token and asset decision.
 3. Create a `report-profile` that validates against `schemas/report-profile.schema.json`. Set package names only after confirming they exist or are explicitly authorized.
-4. Validate the theme and configuration:
+4. Review both profiles against the versioned schemas. If the optional Python tooling is available, add deterministic validation and a write-free scaffold preview:
 
    ```bash
    python skills/build-apex-brand-reports/scripts/validate_theme.py brand-profile.json
@@ -45,7 +47,7 @@ Read [architecture.md](references/architecture.md) before designing or changing 
      --target /path/to/project --config report-kit.yaml --platform apex --dry-run
    ```
 
-5. Review the dry-run file list and diffs. Apply the scaffold only when the target and ownership are correct.
+5. With or without the scripts, review the complete target file list and diffs before writing. Apply only when the target and ownership are correct.
 6. Keep engine, theme, document composition, and business content in separate files and package responsibilities.
 7. Implement the public report function in the confirmed consumer-owned domain package. Keep queries, filters, metrics, organizational scope, and permission checks there.
 8. Configure the mandatory native Dynamic Content region through Page Designer. A thin modal page is the default host unless the project explicitly authorizes another native APEX page route.
@@ -54,11 +56,11 @@ Read [architecture.md](references/architecture.md) before designing or changing 
 
 ## Install
 
-Read [installation-and-upgrade.md](references/installation-and-upgrade.md). Prefer a tagged release or verified commit. Do not modify global agent configuration automatically. Run `--dry-run` before the first write. Validate the generated manifest and inspect every managed path before compilation.
+Read [installation-and-upgrade.md](references/installation-and-upgrade.md). Prefer a tagged release or verified commit. Do not modify global agent configuration automatically. A capable agent may install and render the templates without Python. When using the optional scaffolder, run `--dry-run` before the first write. In every path, inspect managed files before compilation.
 
 ## Update
 
-Run the scaffolder with `--update --dry-run`, inspect the version change and diffs, then apply `--update`. Update only engine-managed files by default. Preserve theme-managed and project-owned files. Stop on checksum conflicts; never overwrite them silently. Use `--force` only after an explicit review and retain Git rollback.
+Prefer the optional scaffolder with `--update --dry-run` for deterministic upgrades. Without Python, compare the tagged engine templates, installed manifest, and consumer files directly before editing. Update only engine-managed files by default. Preserve theme-managed and project-owned files. Stop on checksum conflicts; never overwrite them silently. Use `--force` only after an explicit review and retain rollback evidence.
 
 ## Maintain
 
@@ -66,8 +68,8 @@ Change the central runtime only for behavior reusable across consumers. Change a
 
 ## Validate
 
-1. Run the official skill validator and repository tests.
-2. Validate the scaffold, schemas, placeholders, managed-file checksums, sensitive-data scan, and package artifact.
+1. Run the official skill validator and repository tests when their tooling is available; otherwise perform the equivalent contract review and report the omitted automation.
+2. Validate the scaffold, schemas, placeholders, managed-file checksums, sensitive-data scan, and package artifact with the strongest available tools.
 3. Exercise initial creation, dry-run, overwrite protection, force, update, theme/business preservation, and conflict detection.
 4. Inspect desktop, tablet, mobile, narrow layout, keyboard focus, partial refresh, and reduced motion.
 5. Produce real portrait, landscape, and long-table PDFs; render every page to images and inspect every image.

@@ -1,10 +1,10 @@
-# Validation evidence for v0.1.0
+# Validation evidence for v0.1.1
 
 ## Automated
 
 ```text
 python -m unittest discover -s tests -v
-22 tests passed
+23 tests passed
 
 python skill-creator/scripts/quick_validate.py skills/build-apex-brand-reports
 Skill is valid!
@@ -13,7 +13,7 @@ python skills/build-apex-brand-reports/scripts/validate_sensitive_data.py .
 OK: no sensitive-data patterns found
 ```
 
-The suite covers schemas, focus and text contrast, CSS-token injection, deterministic packaging, packaged dependencies, dry-run, initial creation, overwrite protection, force, repeat creation rejection, update preservation, engine conflict detection, manifests, unresolved placeholders, native Dynamic Content architecture, PDFs, XLSX types, and sensitive-data patterns.
+The suite covers schemas, focus and text contrast, CSS-token injection, deterministic packaging, packaged optional dependencies, the no-Python runtime contract, dry-run, initial creation, overwrite protection, force, repeat creation rejection, update preservation, engine conflict detection, manifests, unresolved placeholders, native Dynamic Content architecture, PDFs, XLSX types, and sensitive-data patterns.
 
 ## Browser
 
@@ -35,4 +35,4 @@ All three PDFs are tagged and contain no embedded JavaScript. Poppler rendered a
 
 ## Compatibility evidence
 
-Python scripts, the static browser example, browser PDFs, and the synthetic XLSX are confirmed by the evidence above. Oracle APEX 24.2 and Oracle Database 26ai remain `expected-not-tested`: templates were reviewed statically, but consumer-side DEV compilation and authenticated runtime validation are required before deployment.
+The agent-native contract does not require Python for extraction or APEX runtime. Optional Python scripts, the static browser example, browser PDFs, and the synthetic XLSX are confirmed by the evidence above. Oracle APEX 24.2 and Oracle Database 26ai remain `expected-not-tested`: templates were reviewed statically, but consumer-side DEV compilation and authenticated runtime validation are required before deployment.

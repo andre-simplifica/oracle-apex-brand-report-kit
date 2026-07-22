@@ -34,17 +34,28 @@ tests/                            unit, security, scaffold, and artifact tests
 .github/                          CI and community templates
 ```
 
-## Requirements
+## Oracle APEX runtime requirements
 
-- Python 3.10 or newer.
-- `jsonschema==4.25.1` for Draft 2020-12 validation.
-- `PyYAML==6.0.2` for safe YAML configuration parsing.
-- Git for reviewable rollback.
-- For visual validation: a supported browser and a way to capture responsive screenshots.
-- For PDF validation: browser printing plus Poppler `pdfinfo` and `pdftoppm`.
-- For database application: a confirmed Oracle APEX/Database environment, project-approved SQLcl wrapper, locks, and DEV authorization.
+- Oracle APEX 24.2 and an Oracle Database environment confirmed by the consumer project.
+- One native Dynamic Content region calling a project-owned PL/SQL `RETURN CLOB` function.
+- A supported browser for responsive rendering, printing, and Save as PDF.
+- Project-approved SQLcl or Page Designer access, locks, and DEV authorization for installation.
 
-The two pinned Python libraries are intentionally narrow: one validates formal schemas and one parses the human-editable YAML report profile. Runtime PL/SQL has no remote service or CDN dependency.
+**Python is not required by Oracle APEX, the database, the Dynamic Content region, the PL/SQL developer, or the end user.** The generated runtime is PL/SQL, HTML, CSS, and JavaScript only.
+
+## Agent capabilities
+
+Codex, Claude Code, or another capable agent can follow the central `SKILL.md` without Python. It needs to read the official visual source and project instructions, inspect the authorized files or pages, edit the consumer repository, and use the available browser, PDF, database, and spreadsheet tools required by the requested validation.
+
+## Optional reference tooling
+
+- Python 3.10 or newer runs the repository's deterministic scaffolder, validators, tests, and package builder.
+- `jsonschema==4.25.1` validates the formal Draft 2020-12 contracts in that optional Python path.
+- `PyYAML==6.0.2` safely parses the human-editable YAML configuration in that optional Python path.
+- Git provides reviewable diffs and rollback.
+- Poppler `pdfinfo` and `pdftoppm` automate PDF inspection when equivalent PDF tooling is unavailable to the agent.
+
+These tools strengthen repeatability and CI; they are not APEX runtime dependencies or prerequisites for agent-led brand extraction.
 
 ## Install the skill
 
@@ -58,13 +69,7 @@ cp -R oracle-apex-brand-report-kit/skills/build-apex-brand-reports "${CODEX_HOME
 
 ### From a release
 
-Download `build-apex-brand-reports-0.1.0.zip` from the `v0.1.0` release, verify the published checksum, and extract the `build-apex-brand-reports` directory into `${CODEX_HOME:-$HOME/.codex}/skills/` or another trusted skill directory.
-
-Install the skill-local pinned dependencies so a copied release remains self-contained:
-
-```bash
-python -m pip install -r /path/to/build-apex-brand-reports/requirements.txt
-```
+Download `build-apex-brand-reports-0.1.1.zip` from the `v0.1.1` release, verify the published checksum, and extract the `build-apex-brand-reports` directory into `${CODEX_HOME:-$HOME/.codex}/skills/` or another trusted skill directory. No Python installation is required to let a capable agent read and follow the skill.
 
 ### From a local checkout
 
@@ -81,7 +86,9 @@ cp -R skills/build-apex-brand-reports /path/to/custom-skills/
 
 No installer changes global agent configuration. See [Codex](adapters/codex/README.md), [Claude](adapters/claude/README.md), and [generic-agent](adapters/generic/README.md) adapters.
 
-## Install development dependencies
+## Optional: enable deterministic Python tooling
+
+Only install these dependencies when you want to run the bundled scaffolder, validators, tests, or package builder:
 
 ```bash
 python -m venv .venv
@@ -94,7 +101,7 @@ python -m pip install -r requirements.txt
 1. Give the agent one official source: public URL, authorized authenticated app, HTML, website, PDF, rendered slides, images, screenshots, asset directory, or brand manual.
 2. Require complete navigation, responsive inspection, original-asset discovery, license review, contrast validation, and token provenance.
 3. Store the extracted identity only in the authorized consumer project.
-4. Validate it:
+4. Check it against the versioned `brand-profile` contract. A capable agent may do this directly. When the optional Python tooling is enabled, also run:
 
 ```bash
 python skills/build-apex-brand-reports/scripts/validate_theme.py /path/to/brand-profile.json
@@ -132,9 +139,21 @@ document:
   economy_print: false
 ```
 
-All values are validated against [`report-profile.schema.json`](schemas/report-profile.schema.json). When XLSX or CSV is enabled, a confirmed project-owned export procedure is required.
+All values must conform to [`report-profile.schema.json`](schemas/report-profile.schema.json). The optional validator enforces the contract deterministically. When XLSX or CSV is enabled, a confirmed project-owned export procedure is required.
 
-## Scaffold the consumer
+## Agent-native workflow without Python
+
+1. Read the consumer project's instructions and the central [`SKILL.md`](skills/build-apex-brand-reports/SKILL.md).
+2. Inspect the complete authorized visual source with the agent's browser, PDF, image, presentation, or file tools.
+3. Create consumer-owned brand and report profiles following the versioned schemas as contracts.
+4. Read and render the templates under `skills/build-apex-brand-reports/assets/`, or create equivalent files that preserve the same engine/theme/document/business boundaries.
+5. Review every target path and diff before writing. Never connect, compile, commit, or push implicitly.
+6. Configure the native Dynamic Content region, compile only in the authorized DEV environment, and validate the real runtime and PDFs.
+7. State which optional deterministic validators were not executed; do not turn their absence into a Python requirement.
+
+See [Agent-native workflow](skills/build-apex-brand-reports/references/agent-native-workflow.md) for the complete operational contract.
+
+## Optional deterministic scaffolder
 
 Always inspect a dry run first:
 
@@ -227,7 +246,7 @@ Report vulnerabilities through GitHub private vulnerability reporting; see [SECU
 ```bash
 python -m unittest discover -s tests -v
 python /path/to/skill-creator/scripts/quick_validate.py skills/build-apex-brand-reports
-python skills/build-apex-brand-reports/scripts/package_skill.py --output dist/build-apex-brand-reports-0.1.0.zip
+python skills/build-apex-brand-reports/scripts/package_skill.py --output dist/build-apex-brand-reports-0.1.1.zip
 ```
 
 CI validates the skill, schemas, scripts, initial scaffold, dry-run, update preservation, conflict detection, placeholders, security scan, synthetic theme, PDFs, XLSX, examples, and deterministic package.
@@ -236,9 +255,10 @@ See the recorded [validation evidence](tests/VALIDATION.md) and the two independ
 
 ## Compatibility
 
-| Surface | Status in v0.1.0 | Evidence |
+| Surface | Status in v0.1.1 | Evidence |
 |---|---|---|
-| Python 3.10+ scripts | Confirmed by CI/local tests | Schema, scaffold, update, scan, package, and artifact tests |
+| Agent-native workflow without Python | Contract confirmed | Central skill, schemas, templates, adapters, and explicit manual review path |
+| Optional Python 3.10+ tooling | Confirmed by CI/local tests | Schema, scaffold, update, scan, package, and artifact tests |
 | HTML/CSS/JS synthetic runtime | Confirmed in the recorded test browser | Desktop, tablet, mobile, narrow, controls, and print states |
 | Browser-generated PDF | Confirmed for recorded synthetic outputs | Portrait, landscape, and long-table PDFs rendered page by page |
 | XLSX artifact | Confirmed for the synthetic workbook | Open XML structure, sheet, headers, native types, accents, and injection-safe text |
