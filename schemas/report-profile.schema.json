@@ -9,7 +9,7 @@
     "report_kit": {
       "type": "object", "additionalProperties": false, "required": ["runtime_version", "schema_version"],
       "properties": {
-        "runtime_version": {"const": "0.1.0"},
+        "runtime_version": {"const": "0.1.1"},
         "schema_version": {"const": "1.0"}
       }
     },

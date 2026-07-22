@@ -2,6 +2,15 @@
 
 All notable changes follow [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and semantic versioning.
 
+## [Unreleased]
+
+### Changed
+
+- Localized generated runtime actions, emission metadata, safe errors, filenames, and examples for Portuguese locales while preserving the English fallback.
+- Marked the document root with the configured language and localized its emission date format.
+- Removed the modal blueprint assumption that every report function is argument-free; consumers must use the confirmed PL/SQL signature and binds.
+- Bumped the generated runtime to `0.1.1` and the installable skill to `0.1.2`.
+
 ## [0.1.1] - 2026-07-22
 
 ### Changed

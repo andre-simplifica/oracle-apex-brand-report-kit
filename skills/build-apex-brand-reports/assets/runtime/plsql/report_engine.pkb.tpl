@@ -63,7 +63,7 @@ create or replace package body {{ENGINE_PACKAGE}} as
         l_value := regexp_replace(l_value, '-+', '-');
         l_value := trim(both '-' from l_value);
         if l_value is null then
-            l_value := 'report.pdf';
+            l_value := '{{DEFAULT_FILENAME}}';
         end if;
         return substr(l_value, 1, 120);
     end safe_filename;
@@ -131,7 +131,7 @@ function init(ctx){roots(ctx).forEach(bind);}w.ApexBrandReportKit={init:init};in
         p_density           in varchar2 default '{{DENSITY}}',
         p_economy_print     in boolean default {{ECONOMY_PRINT_BOOL}},
         p_repeat_table_head in boolean default {{REPEAT_TABLE_HEADER_BOOL}},
-        p_suggested_name    in varchar2 default 'report.pdf',
+        p_suggested_name    in varchar2 default '{{DEFAULT_FILENAME}}',
         p_theme_css         in clob default null,
         p_logo_html         in clob default null,
         p_toolbar_html      in clob default null
@@ -149,15 +149,15 @@ function init(ctx){roots(ctx).forEach(bind);}w.ApexBrandReportKit={init:init};in
             if l_toolbar = 'none' or (l_toolbar = 'custom' and p_toolbar_html is null) or (l_toolbar <> 'custom' and not l_has_actions) then
                 return;
             end if;
-            append_text(l_result, '<div class="abrk__toolbar" role="toolbar" aria-label="Report actions">');
+            append_text(l_result, '<div class="abrk__toolbar" role="toolbar" aria-label="{{LABEL_REPORT_ACTIONS}}">');
             if l_toolbar = 'custom' then
                 append(l_result, p_toolbar_html);
                 append_text(l_result, '</div>');
                 return;
             end if;
-            if {{FEATURE_FULLSCREEN}} then append_text(l_result, '<button class="abrk__action abrk__action--quiet" type="button" data-abrk-action="fullscreen">Full screen</button>'); end if;
-            if {{FEATURE_PRINT}} then append_text(l_result, '<button class="abrk__action abrk__action--quiet" type="button" data-abrk-action="print">Print</button>'); end if;
-            if {{FEATURE_PDF}} then append_text(l_result, '<button class="abrk__action" type="button" data-abrk-action="pdf">Save as PDF</button>'); end if;
+            if {{FEATURE_FULLSCREEN}} then append_text(l_result, '<button class="abrk__action abrk__action--quiet" type="button" data-abrk-action="fullscreen">{{LABEL_FULLSCREEN}}</button>'); end if;
+            if {{FEATURE_PRINT}} then append_text(l_result, '<button class="abrk__action abrk__action--quiet" type="button" data-abrk-action="print">{{LABEL_PRINT}}</button>'); end if;
+            if {{FEATURE_PDF}} then append_text(l_result, '<button class="abrk__action" type="button" data-abrk-action="pdf">{{LABEL_SAVE_PDF}}</button>'); end if;
             if {{FEATURE_XLSX}} then append_text(l_result, '<button class="abrk__action" type="button" data-abrk-action="xlsx">XLSX</button>'); end if;
             if {{FEATURE_CSV}} then append_text(l_result, '<button class="abrk__action abrk__action--quiet" type="button" data-abrk-action="csv">CSV</button>'); end if;
             append_text(l_result, '</div>');
@@ -169,7 +169,7 @@ function init(ctx){roots(ctx).forEach(bind);}w.ApexBrandReportKit={init:init};in
         append(l_result, base_css);
         append(l_result, p_theme_css);
         append_text(l_result, '<style data-abrk-page>@page{size:A4 ' || l_orientation || ';margin:14mm}</style>');
-        append_text(l_result, '<div class="abrk" id="' || attr(p_root_id) || '" data-abrk-root data-orientation="' || attr(l_orientation) || '" data-header-size="' || attr(l_header_size) || '" data-toolbar-variant="' || attr(l_toolbar) || '" data-toolbar-position="' || attr(l_toolbar_pos) || '" data-density="' || attr(l_density) || '" data-economy-print="' || case when p_economy_print then 'true' else 'false' end || '" data-repeat-table-header="' || case when p_repeat_table_head then 'true' else 'false' end || '" data-suggested-name="' || attr(safe_filename(p_suggested_name)) || '">');
+        append_text(l_result, '<div class="abrk" lang="{{LOCALE}}" id="' || attr(p_root_id) || '" data-abrk-root data-orientation="' || attr(l_orientation) || '" data-header-size="' || attr(l_header_size) || '" data-toolbar-variant="' || attr(l_toolbar) || '" data-toolbar-position="' || attr(l_toolbar_pos) || '" data-density="' || attr(l_density) || '" data-economy-print="' || case when p_economy_print then 'true' else 'false' end || '" data-repeat-table-header="' || case when p_repeat_table_head then 'true' else 'false' end || '" data-suggested-name="' || attr(safe_filename(p_suggested_name)) || '">');
         if l_toolbar_pos = 'above-header' then add_toolbar; end if;
         append_text(l_result, '<div class="abrk__document">');
         append_text(l_result, '<header class="abrk__header abrk__header--' || attr(l_header) || '"><div class="abrk__identity">');
@@ -198,8 +198,8 @@ function init(ctx){roots(ctx).forEach(bind);}w.ApexBrandReportKit={init:init};in
     begin
         append_text(l_result, '</main>');
         append_text(l_result, '<footer class="abrk__footer abrk__footer--' || attr(l_footer) || '"><div class="abrk__footer-meta">');
-        if '{{SHOW_EMISSION_DATETIME}}' = 'Y' then append_text(l_result, '<span>Generated at ' || html(to_char(p_generated_at at time zone '{{TIMEZONE}}', 'YYYY-MM-DD HH24:MI TZH:TZM')) || '</span>'); end if;
-        if '{{SHOW_EMISSION_USER}}' = 'Y' and p_generated_by is not null then append_text(l_result, '<span>Generated by ' || html(p_generated_by) || '</span>'); end if;
+        if '{{SHOW_EMISSION_DATETIME}}' = 'Y' then append_text(l_result, '<span>{{LABEL_GENERATED_AT}} ' || html(to_char(p_generated_at at time zone '{{TIMEZONE}}', '{{DATETIME_FORMAT}}')) || '</span>'); end if;
+        if '{{SHOW_EMISSION_USER}}' = 'Y' and p_generated_by is not null then append_text(l_result, '<span>{{LABEL_GENERATED_BY}} ' || html(p_generated_by) || '</span>'); end if;
         append_text(l_result, '</div></footer></div></div>');
         append(l_result, runtime_js);
         return l_result;
@@ -244,7 +244,7 @@ function init(ctx){roots(ctx).forEach(bind);}w.ApexBrandReportKit={init:init};in
     function safe_error(p_reference in varchar2 default null) return clob is
         l_reference varchar2(100) := regexp_replace(p_reference, '[^A-Za-z0-9._-]', '');
     begin
-        return to_clob('<div class="abrk"><aside class="abrk__message" data-tone="error" role="alert"><div class="abrk__message-title">Report unavailable</div><p>We could not prepare this report. Please try again or contact support' || case when l_reference is not null then ' and mention reference ' || attr(l_reference) else null end || '.</p></aside></div>');
+        return to_clob('<div class="abrk" lang="{{LOCALE}}"><aside class="abrk__message" data-tone="error" role="alert"><div class="abrk__message-title">{{ERROR_TITLE}}</div><p>{{ERROR_TEXT}}' || case when l_reference is not null then ' {{ERROR_REFERENCE}} ' || attr(l_reference) else null end || '.</p></aside></div>');
     end safe_error;
 end {{ENGINE_PACKAGE}};
 /
