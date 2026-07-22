@@ -8,13 +8,17 @@ Codex uses the central [`SKILL.md`](../../skills/build-apex-brand-reports/SKILL.
 git clone --depth 1 https://github.com/andre-simplifica/oracle-apex-brand-report-kit.git
 mkdir -p "${CODEX_HOME:-$HOME/.codex}/skills"
 cp -R oracle-apex-brand-report-kit/skills/build-apex-brand-reports "${CODEX_HOME:-$HOME/.codex}/skills/"
+```
+
+No Python installation is required for Codex to read the skill, inspect the visual source, and create the Oracle APEX runtime. To use the optional deterministic scaffolder and validators, install their pinned dependencies separately:
+
+```bash
 python -m pip install -r "${CODEX_HOME:-$HOME/.codex}/skills/build-apex-brand-reports/requirements.txt"
-python "${CODEX_HOME:-$HOME/.codex}/skills/build-apex-brand-reports/scripts/package_skill.py" --help
 ```
 
 ## Install from a release
 
-Download `build-apex-brand-reports-0.1.0.zip`, verify the release and checksum, then extract its `build-apex-brand-reports` directory into `${CODEX_HOME:-$HOME/.codex}/skills/`. Install the pinned libraries from the extracted `requirements.txt`. Restart or open a new Codex task so discovery refreshes.
+Download `build-apex-brand-reports-0.1.1.zip`, verify the release and checksum, then extract its `build-apex-brand-reports` directory into `${CODEX_HOME:-$HOME/.codex}/skills/`. Restart or open a new Codex task so discovery refreshes. Install `requirements.txt` only if you choose to run the optional Python scripts.
 
 ## Install locally or in a custom directory
 
@@ -47,4 +51,4 @@ Access policy: CONFIRMED_AUTHORIZATION_SCHEME and organization scope
 
 ## Update
 
-Install the newer tagged skill into a temporary directory, compare it with the installed copy, then replace the skill directory. In each consumer project, run `scaffold_project.py --update --dry-run`, inspect diffs, and apply `--update` only after resolving conflicts.
+Install the newer tagged skill into a temporary directory, compare it with the installed copy, then replace the skill directory. In each consumer project, either use the agent-native comparison workflow or run the optional `scaffold_project.py --update --dry-run`. Inspect every diff and preserve theme and business files.

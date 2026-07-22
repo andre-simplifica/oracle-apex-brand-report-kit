@@ -10,6 +10,6 @@ When asked to create, install, update, or validate branded Oracle APEX reports, 
 
 If the environment supports project knowledge or reusable instruction files, add the skill directory without changing its contents. If it does not, tell the agent to read the central `SKILL.md` and only the references it routes for the task. The agent still needs file editing and command execution; browser, database, PDF, and spreadsheet capabilities are optional but required to claim their respective validations.
 
-Install the two pinned Python dependencies from the copied skill's `requirements.txt` before running its validation or scaffolding scripts.
+Claude Code can perform the identity extraction and generate the PL/SQL/HTML/CSS/JavaScript consumer files without Python. The copied `requirements.txt` is needed only when choosing to run the optional deterministic scaffolder or validators.
 
-Update by replacing the referenced skill directory with a verified tagged version, then run the consumer runtime's dry-run upgrade flow. Never auto-edit global Claude configuration.
+Update by replacing the referenced skill directory with a verified tagged version, then compare the consumer runtime through the agent-native or optional scripted upgrade flow. Never auto-edit global Claude configuration.

@@ -58,6 +58,17 @@ class SkillTests(unittest.TestCase):
         self.assertTrue(25 <= len(interface["short_description"]) <= 64)
         self.assertIn("$build-apex-brand-reports", interface["default_prompt"])
 
+    def test_python_is_optional_tooling_not_an_apex_runtime_requirement(self) -> None:
+        readme = (ROOT / "README.md").read_text(encoding="utf-8")
+        skill = (SKILL / "SKILL.md").read_text(encoding="utf-8")
+        generic = (ROOT / "adapters" / "generic" / "README.md").read_text(encoding="utf-8")
+        agent_native = (SKILL / "references" / "agent-native-workflow.md").read_text(encoding="utf-8")
+        self.assertIn("Python is not required by Oracle APEX", readme)
+        self.assertIn("Never require Python", skill)
+        self.assertIn("Python is not a minimum capability", generic)
+        self.assertNotIn("Run Python commands", generic)
+        self.assertIn("Python is not a prerequisite", agent_native)
+
     def test_packaging_is_deterministic_and_installable(self) -> None:
         self.assertEqual((ROOT / "requirements.txt").read_bytes(), (SKILL / "requirements.txt").read_bytes())
         with tempfile.TemporaryDirectory() as tmp:
@@ -139,6 +150,7 @@ class ScaffoldTests(unittest.TestCase):
             run_script("validate_scaffold.py", target)
             manifest = json.loads((target / ".apex-brand-report-kit" / "installation-manifest.json").read_text(encoding="utf-8"))
             self.assertEqual(manifest["runtime_version"], "0.1.0")
+            self.assertEqual(manifest["skill_version"], "0.1.1")
             self.assertEqual(manifest["theme"], {"id": "acme-harbor", "version": "1.0.0"})
             self.assertEqual(len(manifest["managed_files"]["engine"]), 4)
             self.assertEqual(len(manifest["managed_files"]["theme"]), 4)
