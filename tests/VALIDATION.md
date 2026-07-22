@@ -1,10 +1,10 @@
-# Validation evidence for v0.1.1
+# Validation evidence for v0.1.2
 
 ## Automated
 
 ```text
 python -m unittest discover -s tests -v
-23 tests passed
+27 tests passed
 
 python skill-creator/scripts/quick_validate.py skills/build-apex-brand-reports
 Skill is valid!

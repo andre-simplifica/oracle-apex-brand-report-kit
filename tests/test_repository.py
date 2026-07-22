@@ -3,6 +3,7 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -68,6 +69,26 @@ class SkillTests(unittest.TestCase):
         self.assertIn("Python is not a minimum capability", generic)
         self.assertNotIn("Run Python commands", generic)
         self.assertIn("Python is not a prerequisite", agent_native)
+
+    def test_release_metadata_matches_current_skill_version(self) -> None:
+        kit_source = (SCRIPTS / "_kit.py").read_text(encoding="utf-8")
+        version_match = re.search(r'^SKILL_VERSION = "([^"]+)"$', kit_source, re.MULTILINE)
+        self.assertIsNotNone(version_match)
+        version = version_match.group(1)
+        artifact = f"build-apex-brand-reports-{version}.zip"
+
+        readme = (ROOT / "README.md").read_text(encoding="utf-8")
+        codex_adapter = (ROOT / "adapters" / "codex" / "README.md").read_text(encoding="utf-8")
+        changelog = (ROOT / "CHANGELOG.md").read_text(encoding="utf-8")
+        validation = (ROOT / "tests" / "VALIDATION.md").read_text(encoding="utf-8")
+        release_workflow = (ROOT / ".github" / "workflows" / "release.yml").read_text(encoding="utf-8")
+
+        self.assertIn(artifact, readme)
+        self.assertIn(artifact, codex_adapter)
+        self.assertIn(f"## [{version}]", changelog)
+        self.assertIn(f"# Validation evidence for v{version}", validation)
+        self.assertIn('VERSION="${GITHUB_REF_NAME#v}"', release_workflow)
+        self.assertIn('test "${VERSION}" = "${SKILL_VERSION}"', release_workflow)
 
     def test_packaging_is_deterministic_and_installable(self) -> None:
         self.assertEqual((ROOT / "requirements.txt").read_bytes(), (SKILL / "requirements.txt").read_bytes())
