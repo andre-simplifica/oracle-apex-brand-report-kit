@@ -28,7 +28,7 @@ Read [architecture.md](references/architecture.md) before designing or changing 
 ## Route the task
 
 - For brand extraction, source navigation, asset licensing, token provenance, and responsive evidence, read [brand-extraction.md](references/brand-extraction.md).
-- For operational dashboards, KPI surfaces, cards, section hierarchy, responsive composition, tooltips, and visual modernization, read [operational-dashboard-visual-system.md](references/operational-dashboard-visual-system.md).
+- For operational dashboards, compact shells, action toolbars, KPI surfaces, cards, section hierarchy, responsive composition, tooltips, and visual modernization, read [operational-dashboard-visual-system.md](references/operational-dashboard-visual-system.md).
 - For PL/SQL packages, `RETURN CLOB`, Dynamic Content, thin modal pages, Page Designer, partial refresh, and authorization placement, read [oracle-apex.md](references/oracle-apex.md).
 - For A4 portrait/landscape, browser print, PDF generation, page breaking, and page-by-page inspection, read [print-and-pdf.md](references/print-and-pdf.md).
 - For `APEX_EXEC`, `APEX_DATA_EXPORT`, XLSX/CSV typing, spreadsheet injection, and workbook inspection, read [excel-export.md](references/excel-export.md).
@@ -42,7 +42,7 @@ Read [architecture.md](references/architecture.md) before designing or changing 
 
 1. Inspect the official identity source completely with the tools appropriate to its format. Record pages, sections, states, viewports, assets, licenses, and limitations.
 2. When the user also names an approved application or dashboard as an experience reference, inspect its rendered states and real component implementation separately. Extract reusable composition and interaction rules without copying its brand, data, or business language.
-3. Write the visual-system specification before implementation: identity tokens, component anatomy, information hierarchy, responsive layout, semantic accents, focus/tooltip behavior, reduced motion, and the explicit legacy patterns that must not survive.
+3. Write the visual-system specification before implementation: identity tokens, dashboard shell, action toolbar, component anatomy, information hierarchy, responsive layout, semantic accents, focus/tooltip behavior, reduced motion, and the explicit legacy patterns that must not survive.
 4. Create a consumer-owned `brand-profile` that validates against `schemas/brand-profile.schema.json`. Preserve provenance for every important token and asset decision.
 5. Create a `report-profile` that validates against `schemas/report-profile.schema.json`. Set package names only after confirming they exist or are explicitly authorized.
 6. Review both profiles against the versioned schemas. If the optional Python tooling is available, add deterministic validation and a write-free scaffold preview:
@@ -78,7 +78,7 @@ Change the central runtime only for behavior reusable across consumers. Change a
 1. Run the official skill validator and repository tests when their tooling is available; otherwise perform the equivalent contract review and report the omitted automation.
 2. Validate the scaffold, schemas, placeholders, managed-file checksums, sensitive-data scan, and package artifact with the strongest available tools.
 3. Exercise initial creation, dry-run, overwrite protection, force, update, theme/business preservation, and conflict detection.
-4. Inspect desktop, tablet, mobile, narrow layout, keyboard focus, partial refresh, and reduced motion. For dashboards, also verify that related KPIs read as one hierarchy, four-item groups do not leave an orphan card at wide widths, and kicker/title/summary lines do not repeat one another.
+4. Inspect desktop, tablet, mobile, narrow layout, keyboard focus, partial refresh, and reduced motion. For dashboards, also verify the identity/context/actions shell, toolbar authorization, region-scoped refresh, root-scoped fullscreen, one spacing rhythm, related KPIs as one hierarchy, no orphan fourth card at wide widths, and non-repeating kicker/title/summary lines.
 5. Produce real portrait, landscape, and long-table PDFs; render every page to images and inspect every image.
 6. Produce a real XLSX; inspect sheet name, headers, rows, columns, native numbers, native dates, accents, formulas, filters, and unsafe leading characters.
 7. Test an empty state and a safe error state. Never expose raw Oracle/APEX errors to end users.

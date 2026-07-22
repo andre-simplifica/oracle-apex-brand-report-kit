@@ -79,6 +79,10 @@ class SkillTests(unittest.TestCase):
         self.assertIn("Prefer surfaces over card mosaics", reference)
         self.assertIn("4 -> 2 -> 1", reference)
         self.assertIn("a section kicker repeats its title", reference)
+        self.assertIn("Compose a compact dashboard shell", reference)
+        self.assertIn("Identity:**", reference)
+        self.assertIn("data-dashboard-action", reference)
+        self.assertIn("fullscreenchange", reference)
 
     def test_optional_oracle_apex_echarts_integration_preserves_core_contract(self) -> None:
         skill = (SKILL / "SKILL.md").read_text(encoding="utf-8")
@@ -198,7 +202,7 @@ class ScaffoldTests(unittest.TestCase):
             run_script("validate_scaffold.py", target)
             manifest = json.loads((target / ".apex-brand-report-kit" / "installation-manifest.json").read_text(encoding="utf-8"))
             self.assertEqual(manifest["runtime_version"], "0.1.1")
-            self.assertEqual(manifest["skill_version"], "0.2.0")
+            self.assertEqual(manifest["skill_version"], "0.2.1")
             self.assertEqual(manifest["theme"], {"id": "acme-harbor", "version": "1.0.0"})
             self.assertEqual(len(manifest["managed_files"]["engine"]), 4)
             self.assertEqual(len(manifest["managed_files"]["theme"]), 4)

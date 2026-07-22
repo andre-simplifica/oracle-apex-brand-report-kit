@@ -1,6 +1,6 @@
-# Validation evidence for v0.2.0
+# Validation evidence for v0.2.1
 
-Version 0.2.0 adds instruction/reference layers for operational-dashboard composition and optional Oracle APEX ECharts interoperability. It does not change the recorded synthetic runtime, PDF, or XLSX artifacts below. Repository tests verify that both references are packaged and routed without making ECharts part of the core runtime; consumer-side APEX runtime validation remains mandatory.
+Version 0.2.1 extends the operational-dashboard reference with a reusable compact shell and toolbar contract. It does not change the recorded synthetic runtime, PDF, or XLSX artifacts below. Repository tests verify that the shell guidance is packaged and routed while consumer-specific branding, permissions, Static IDs, and business actions remain local; consumer-side APEX runtime validation remains mandatory.
 
 ## Automated
 

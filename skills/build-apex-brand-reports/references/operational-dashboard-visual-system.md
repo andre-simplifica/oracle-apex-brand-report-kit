@@ -11,6 +11,50 @@ Write these contracts before changing code:
 
 Do not collapse the two contracts into a mood board. A successful result should visibly belong to the consumer while behaving and composing as well as the approved experience reference.
 
+## Compose a compact dashboard shell
+
+A dedicated dashboard may provide its own compact internal shell when the
+consumer project authorizes it. Keep that shell separate from the global APEX
+navigation and from print/PDF document headers. Its header has three stable
+zones:
+
+1. **Identity:** the authorized tenant or project mark with a safe fallback;
+2. **Context:** a short category, the dashboard title, and one concise sentence;
+3. **Actions:** business actions followed by technical controls in one toolbar.
+
+Keep the identity subordinate to the dashboard title and keep the toolbar on
+one line while space permits. Use one project-owned gap token between the shell
+and each major section instead of accumulating unrelated margins. The content
+width and exact breakpoint belong to the consumer profile; do not hard-code a
+reference application's dimensions into the shared system.
+
+A dedicated dashboard may omit the page breadcrumb only when the internal
+header supplies a meaningful accessible name, the surrounding application
+still provides a clear way back, and the consumer's APEX conventions explicitly
+allow it. The CLOB must not resize or restyle the global application header or
+navigation drawer.
+
+## Standardize the action toolbar
+
+- Use one toolbar container and stable hooks such as
+  `data-dashboard-action`, `data-dashboard-refresh`, and
+  `data-dashboard-fullscreen`; a consumer may namespace those hooks.
+- Put at most one visible primary business action before the technical actions.
+  Move secondary business actions to an overflow menu when space is limited.
+- Treat refresh and fullscreen as optional capabilities. Their absence must not
+  cause a JavaScript error or leave an empty toolbar.
+- Every action needs an icon, an accessible name, visible focus, an explicit
+  destination or request, and server-side authorization when it changes or
+  exposes business state.
+- Refresh only the owning APEX region through its confirmed Static ID. Bind the
+  runtime idempotently so repeated `apexafterrefresh` events do not duplicate
+  handlers, observers, or requests.
+- Fullscreen only the dashboard root, synchronize icon, title, and accessible
+  label on `fullscreenchange`, and tolerate the browser leaving fullscreen
+  outside the button.
+- Hide the toolbar in print. At narrow widths, labels may collapse to icons only
+  when `aria-label` and `title` remain meaningful.
+
 ## Prefer surfaces over card mosaics
 
 Related measures should normally read as one analytical sentence:
@@ -76,6 +120,8 @@ Use decorative gradients only as low-contrast surface depth. Preserve text contr
 - Preserve `apexafterrefresh` behavior and prevent duplicate handlers or observers.
 - Use content-driven height. Do not force equal heights when text can vary; align peer cards through grid stretch and internal layout instead.
 - Test initial load and repeated region refresh before accepting the component.
+- Scope shell, refresh, and fullscreen behavior to the dashboard root; never
+  attach them to the whole APEX page by accident.
 
 ## Modernization workflow
 
@@ -100,4 +146,7 @@ Reject the result when any of these remain:
 - colors come from the experience reference instead of the consumer identity;
 - fixed heights clip text or create large empty areas;
 - tooltips work only with a pointer;
+- the dashboard header duplicates the breadcrumb without an explicit reason;
+- the toolbar wraps into an accidental second header row or loses accessible names;
+- refresh duplicates events or fullscreen captures the whole application shell;
 - the dashboard breaks after an APEX region refresh.

@@ -18,7 +18,7 @@ python -m pip install -r "${CODEX_HOME:-$HOME/.codex}/skills/build-apex-brand-re
 
 ## Install from a release
 
-Download `build-apex-brand-reports-0.2.0.zip`, verify the release and checksum, then extract its `build-apex-brand-reports` directory into `${CODEX_HOME:-$HOME/.codex}/skills/`. Restart or open a new Codex task so discovery refreshes. Install `requirements.txt` only if you choose to run the optional Python scripts.
+Download `build-apex-brand-reports-0.2.1.zip`, verify the release and checksum, then extract its `build-apex-brand-reports` directory into `${CODEX_HOME:-$HOME/.codex}/skills/`. Restart or open a new Codex task so discovery refreshes. Install `requirements.txt` only if you choose to run the optional Python scripts.
 
 ## Install locally or in a custom directory
 
