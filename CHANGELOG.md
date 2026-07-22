@@ -4,6 +4,10 @@ All notable changes follow [Keep a Changelog](https://keepachangelog.com/en/1.1.
 
 ## [Unreleased]
 
+### Added
+
+- Documented optional `$oracle-apex-echarts` interoperability without making charts, the plug-in, or its bundle a dependency of the core report contract.
+
 ## [0.1.2] - 2026-07-22
 
 ### Changed
