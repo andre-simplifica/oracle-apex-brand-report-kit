@@ -80,6 +80,22 @@ class SkillTests(unittest.TestCase):
         self.assertIn("4 -> 2 -> 1", reference)
         self.assertIn("a section kicker repeats its title", reference)
 
+    def test_optional_oracle_apex_echarts_integration_preserves_core_contract(self) -> None:
+        skill = (SKILL / "SKILL.md").read_text(encoding="utf-8")
+        reference = (SKILL / "references" / "oracle-apex-echarts.md").read_text(encoding="utf-8")
+        readme = (ROOT / "README.md").read_text(encoding="utf-8")
+        contract = "\n".join((skill, reference, readme))
+
+        self.assertIn("$oracle-apex-echarts", contract)
+        self.assertIn("releases/tag/v1.0.1", contract)
+        self.assertIn("PK_APEX_ECHARTS.FUNC_CHART_INLINE", reference)
+        self.assertIn("PK_APEX_ECHARTS.FUNC_CHART_AJAX", reference)
+        self.assertIn("RUNTIME_ONLY", reference)
+        self.assertIn("textual or tabular fallback", reference)
+        self.assertIn("fully usable without ECharts", " ".join(reference.split()))
+        self.assertIn("Never copy an ECharts bundle", skill)
+        self.assertEqual(list(SKILL.rglob("echarts-*.min.js")), [])
+
     def test_release_metadata_matches_current_skill_version(self) -> None:
         kit_source = (SCRIPTS / "_kit.py").read_text(encoding="utf-8")
         version_match = re.search(r'^SKILL_VERSION = "([^"]+)"$', kit_source, re.MULTILINE)

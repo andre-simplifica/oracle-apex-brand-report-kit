@@ -9,6 +9,7 @@ All notable changes follow [Keep a Changelog](https://keepachangelog.com/en/1.1.
 ### Added
 
 - Added a brand-neutral operational-dashboard visual system for KPI surfaces, compact cards, semantic accents, section language, tooltips, and responsive `4 -> 2 -> 1` composition.
+- Documented optional `$oracle-apex-echarts` interoperability without making charts, the plug-in, or its bundle a dependency of the core report contract.
 
 ### Changed
 

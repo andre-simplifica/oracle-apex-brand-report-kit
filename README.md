@@ -109,6 +109,23 @@ python skills/build-apex-brand-reports/scripts/validate_theme.py /path/to/brand-
 
 The public repository includes only the original synthetic Acme Harbor identity.
 
+## Optional Apache ECharts integration
+
+When a report explicitly requests a chart, install and invoke
+[`$oracle-apex-echarts`](https://github.com/andre-simplifica/oracle-apex-echarts)
+from release
+[`v1.0.1`](https://github.com/andre-simplifica/oracle-apex-echarts/releases/tag/v1.0.1).
+This kit remains responsible for the document, header, filters, KPIs, cards,
+tables, print/export, and CLOB composition. Oracle APEX ECharts owns ChartSpec,
+chart rendering, lifecycle, accessibility, and its offline bundle.
+
+Embed the chart through `PK_APEX_ECHARTS` inside the Dynamic Content report and
+load its shared assets through one approved `RUNTIME_ONLY` plug-in region. Keep
+business SQL and authorization in the project-owned domain package. Do not copy
+ECharts core files into this repository or a report CLOB, and keep essential
+text or tabular content functional when the chart is unavailable. See the
+[integration contract](skills/build-apex-brand-reports/references/oracle-apex-echarts.md).
+
 ## Configure a report
 
 Copy `examples/synthetic-company/report-kit.yaml` and replace only values confirmed in the consumer project. Important fields include:

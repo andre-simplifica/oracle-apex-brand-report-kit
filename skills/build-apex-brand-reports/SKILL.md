@@ -1,6 +1,6 @@
 ---
 name: build-apex-brand-reports
-description: Build, install, update, maintain, and validate branded Oracle APEX reports and dashboards implemented as PL/SQL RETURN CLOB documents, with responsive layouts, A4 print/PDF, thin modal pages, server-side XLSX/CSV exports, and project-owned authorization. Use agent-native tools without requiring Python to extract an approved visual identity from URLs, authenticated apps, HTML, websites, PDFs, slides, images, screenshots, asset directories, or brand manuals; convert it into versioned theme/report profiles; scaffold a reusable runtime; or validate browser, print, PDF, and spreadsheet output.
+description: Build, install, update, maintain, and validate branded Oracle APEX reports and dashboards implemented as PL/SQL RETURN CLOB documents, with responsive layouts, A4 print/PDF, thin modal pages, server-side XLSX/CSV exports, optional Oracle APEX ECharts integration, and project-owned authorization. Use agent-native tools without requiring Python to extract an approved visual identity from URLs, authenticated apps, HTML, websites, PDFs, slides, images, screenshots, asset directories, or brand manuals; convert it into versioned theme/report profiles; scaffold a reusable runtime; or validate browser, print, PDF, spreadsheet, and chart output.
 ---
 
 # Build APEX Brand Reports
@@ -23,6 +23,7 @@ Read [architecture.md](references/architecture.md) before designing or changing 
 - Never make the runtime depend on an iframe, external frontend server, CDN, or proprietary plug-in. Treat Static Application Files, Page Designer enhancements, and server-side XLSX/CSV processes as complementary integrations only.
 - Never require Python, PyYAML, `jsonschema`, Poppler, or Git for the generated APEX runtime or for agent-led identity extraction. Treat bundled Python scripts as optional deterministic tooling only.
 - Reject or redesign a scaffold that cannot render its core report when optional external CSS/JavaScript files or export processes are absent.
+- When charts are explicitly requested and `$oracle-apex-echarts` is available, keep the report's essential text/table content independent from that optional chart layer. Never copy an ECharts bundle or integration runtime into this kit or a returned CLOB.
 
 ## Route the task
 
@@ -35,6 +36,7 @@ Read [architecture.md](references/architecture.md) before designing or changing 
 - For creating, installing, or maintaining a consumer without Python, read [agent-native-workflow.md](references/agent-native-workflow.md).
 - For runtime upgrades, conflict handling, theme preservation, or maintenance, read both [architecture.md](references/architecture.md) and [installation-and-upgrade.md](references/installation-and-upgrade.md).
 - For browser, responsive, print, PDF, spreadsheet, security, or forward validation, read [validation.md](references/validation.md) plus the output-specific reference.
+- For an explicitly requested Apache ECharts chart, read [oracle-apex-echarts.md](references/oracle-apex-echarts.md) and use `$oracle-apex-echarts`; keep this skill responsible for the document and that skill responsible for the chart.
 
 ## Create a new implementation
 
@@ -54,9 +56,10 @@ Read [architecture.md](references/architecture.md) before designing or changing 
 7. With or without the scripts, review the complete target file list and diffs before writing. Apply only when the target and ownership are correct.
 8. Keep engine, theme, document composition, and business content in separate files and package responsibilities.
 9. Implement the public report function in the confirmed consumer-owned domain package. Keep queries, filters, metrics, organizational scope, and permission checks there.
-10. Configure the mandatory native Dynamic Content region through Page Designer. A thin modal page is the default host unless the project explicitly authorizes another native APEX page route.
-11. Implement XLSX/CSV as separate server-side processes only after confirming the real APEX API version and query types.
-12. Compile or publish only when explicitly authorized by the request and local policy. Acquire and release project locks when required.
+10. If a chart was explicitly requested, let the same domain package produce its authorized ChartSpec and embed `PK_APEX_ECHARTS` output in the report CLOB. Require one approved `RUNTIME_ONLY` loader and an essential textual or tabular fallback; do not emit `<script src>` or bundle bytes.
+11. Configure the mandatory native Dynamic Content region through Page Designer. A thin modal page is the default host unless the project explicitly authorizes another native APEX page route.
+12. Implement XLSX/CSV as separate server-side processes only after confirming the real APEX API version and query types.
+13. Compile or publish only when explicitly authorized by the request and local policy. Acquire and release project locks when required.
 
 ## Install
 
@@ -79,7 +82,8 @@ Change the central runtime only for behavior reusable across consumers. Change a
 5. Produce real portrait, landscape, and long-table PDFs; render every page to images and inspect every image.
 6. Produce a real XLSX; inspect sheet name, headers, rows, columns, native numbers, native dates, accents, formulas, filters, and unsafe leading characters.
 7. Test an empty state and a safe error state. Never expose raw Oracle/APEX errors to end users.
-8. Report what was executed, what remained repository-only, the exact compatibility evidence, and every untested environment.
+8. When ECharts is used, test the report with the chart available and unavailable; essential narrative, KPIs, tables, authorization, print, and export must remain functional.
+9. Report what was executed, what remained repository-only, the exact compatibility evidence, and every untested environment.
 
 ## Preserve security boundaries
 
