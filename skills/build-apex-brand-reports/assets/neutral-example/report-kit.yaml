@@ -1,5 +1,5 @@
 report_kit:
-  runtime_version: "0.1.0"
+  runtime_version: "0.1.1"
   schema_version: "1.0"
 platform: apex
 packages:

@@ -1,5 +1,5 @@
 create or replace package {{ENGINE_PACKAGE}} authid definer as
-    c_runtime_version constant varchar2(20) := '0.1.0';
+    c_runtime_version constant varchar2(20) := '{{RUNTIME_VERSION}}';
 
     procedure append(
         p_target in out nocopy clob,
@@ -23,7 +23,7 @@ create or replace package {{ENGINE_PACKAGE}} authid definer as
         p_density           in varchar2 default '{{DENSITY}}',
         p_economy_print     in boolean default {{ECONOMY_PRINT_BOOL}},
         p_repeat_table_head in boolean default {{REPEAT_TABLE_HEADER_BOOL}},
-        p_suggested_name    in varchar2 default 'report.pdf',
+        p_suggested_name    in varchar2 default '{{DEFAULT_FILENAME}}',
         p_theme_css         in clob default null,
         p_logo_html         in clob default null,
         p_toolbar_html      in clob default null

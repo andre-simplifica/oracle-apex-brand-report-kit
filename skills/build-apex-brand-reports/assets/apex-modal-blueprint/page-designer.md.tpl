@@ -12,7 +12,8 @@
 - Authorization scheme: `{{AUTHORIZATION_SCHEME}}`
 - Region type: Dynamic Content
 - Region template: use the consuming project's blank/no-chrome template
-- Region source: `return {{OWNER_PACKAGE}}.{{REPORT_FUNCTION}};`
+- Region source: call `{{OWNER_PACKAGE}}.{{REPORT_FUNCTION}}` with the confirmed page/global bind parameters required by its real signature.
+- If, and only if, the confirmed function is argument-free, use `return {{OWNER_PACKAGE}}.{{REPORT_FUNCTION}};`.
 - Items to Submit: `{{ITEMS_TO_SUBMIT}}`
 - Default orientation: `{{ORIENTATION}}`
 - Locale/timezone: `{{LOCALE}}` / `{{TIMEZONE}}`

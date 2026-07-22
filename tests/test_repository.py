@@ -149,8 +149,8 @@ class ScaffoldTests(unittest.TestCase):
             run_script("scaffold_project.py", "--target", target, "--config", config, "--installed-at", "2026-07-22T12:00:00Z")
             run_script("validate_scaffold.py", target)
             manifest = json.loads((target / ".apex-brand-report-kit" / "installation-manifest.json").read_text(encoding="utf-8"))
-            self.assertEqual(manifest["runtime_version"], "0.1.0")
-            self.assertEqual(manifest["skill_version"], "0.1.1")
+            self.assertEqual(manifest["runtime_version"], "0.1.1")
+            self.assertEqual(manifest["skill_version"], "0.1.2")
             self.assertEqual(manifest["theme"], {"id": "acme-harbor", "version": "1.0.0"})
             self.assertEqual(len(manifest["managed_files"]["engine"]), 4)
             self.assertEqual(len(manifest["managed_files"]["theme"]), 4)
@@ -223,6 +223,22 @@ class ScaffoldTests(unittest.TestCase):
             run_script("scaffold_project.py", "--target", target, "--config", config)
             run_script("validate_scaffold.py", target)
 
+    def test_validation_is_scoped_to_manifest_declared_files(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            fixture = Path(tmp) / "fixture"
+            fixture.mkdir()
+            config = copy_config_fixture(fixture)
+            target = Path(tmp) / "consumer"
+            run_script("scaffold_project.py", "--target", target, "--config", config)
+            legacy = target / "legacy" / "unrelated-template.sql"
+            legacy.parent.mkdir(parents=True)
+            legacy.write_text(
+                "select '{{LEGITIMATE_LEGACY_PLACEHOLDER}}' from dual;\n" +
+                "password = \"" + "legacy-value-not-owned-by-this-kit" + "\"\n",
+                encoding="utf-8",
+            )
+            run_script("validate_scaffold.py", target)
+
     def test_config_fields_and_brand_tokens_are_operational(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             fixture = Path(tmp) / "fixture"
@@ -245,6 +261,44 @@ class ScaffoldTests(unittest.TestCase):
             self.assertIn("--abrk-soft:#F5F8FB", theme)
             self.assertIn("ABRK_EXPORT_XLSX", export_doc)
             self.assertNotIn("NOT_CONFIGURED", export_doc)
+
+    def test_pt_br_runtime_and_project_examples_are_localized(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            fixture = Path(tmp) / "fixture"
+            fixture.mkdir()
+            config_path = copy_config_fixture(fixture)
+            config = yaml.safe_load(config_path.read_text(encoding="utf-8"))
+            config["locale"] = {"language": "pt-BR", "timezone": "America/Fortaleza"}
+            config_path.write_text(yaml.safe_dump(config, sort_keys=False), encoding="utf-8")
+            target = Path(tmp) / "consumer"
+            run_script("scaffold_project.py", "--target", target, "--config", config_path)
+            engine_spec = (target / "db" / "report-kit" / "pk_abrk_engine.pks").read_text(encoding="utf-8")
+            engine_body = (target / "db" / "report-kit" / "pk_abrk_engine.pkb").read_text(encoding="utf-8")
+            report_example = (target / "docs" / "report-kit" / "report-function-example.sql").read_text(encoding="utf-8")
+            blueprint = (target / "docs" / "report-kit" / "apex-modal-page-900.md").read_text(encoding="utf-8")
+            self.assertIn("c_runtime_version constant varchar2(20) := '0.1.1'", engine_spec)
+            self.assertIn("Ações do relatório", engine_body)
+            self.assertIn("Salvar em PDF", engine_body)
+            self.assertIn("Emitido em", engine_body)
+            self.assertIn("DD/MM/YYYY HH24:MI TZH:TZM", engine_body)
+            self.assertIn('lang="pt-BR"', engine_body)
+            self.assertIn("Relatório indisponível", engine_body)
+            self.assertIn("Título do relatório", report_example)
+            self.assertIn("relatorio.pdf", report_example)
+            self.assertIn("If, and only if, the confirmed function is argument-free", blueprint)
+
+    def test_english_runtime_remains_the_default_fallback(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            fixture = Path(tmp) / "fixture"
+            fixture.mkdir()
+            config = copy_config_fixture(fixture)
+            target = Path(tmp) / "consumer"
+            run_script("scaffold_project.py", "--target", target, "--config", config)
+            engine = (target / "db" / "report-kit" / "pk_abrk_engine.pkb").read_text(encoding="utf-8")
+            self.assertIn("Report actions", engine)
+            self.assertIn("Save as PDF", engine)
+            self.assertIn("Generated at", engine)
+            self.assertIn('lang="en-US"', engine)
 
     def test_disabled_exports_emit_no_invalid_process_block_or_empty_toolbar(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
