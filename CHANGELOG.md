@@ -4,6 +4,17 @@ All notable changes follow [Keep a Changelog](https://keepachangelog.com/en/1.1.
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-07-23
+
+### Added
+
+- Added brand-neutral application-layout contracts for five-zone internal headers, fixed logo surfaces, responsive primary actions, simple period filters, immersive Home heroes, and package-rendered help canvases.
+- Added rejection criteria and a responsive validation matrix covering variable logo aspect ratios, authorization states, partial refresh, fullscreen, filter-context hiding, and long help content.
+
+### Changed
+
+- Expanded skill routing and validation so application-screen behavior remains reusable while identity, business content, page IDs, packages, and authorization stay consumer-owned.
+
 ## [0.2.1] - 2026-07-22
 
 ### Added
@@ -51,7 +62,8 @@ All notable changes follow [Keep a Changelog](https://keepachangelog.com/en/1.1.
 - Synthetic responsive example, portrait/landscape PDFs, rendered page images, and a typed XLSX workbook.
 - Automated structure, security, scaffold, schema, packaging, and artifact tests.
 
-[Unreleased]: https://github.com/andre-simplifica/oracle-apex-brand-report-kit/compare/v0.2.1...HEAD
+[Unreleased]: https://github.com/andre-simplifica/oracle-apex-brand-report-kit/compare/v0.3.0...HEAD
+[0.3.0]: https://github.com/andre-simplifica/oracle-apex-brand-report-kit/releases/tag/v0.3.0
 [0.2.1]: https://github.com/andre-simplifica/oracle-apex-brand-report-kit/releases/tag/v0.2.1
 [0.2.0]: https://github.com/andre-simplifica/oracle-apex-brand-report-kit/releases/tag/v0.2.0
 [0.1.2]: https://github.com/andre-simplifica/oracle-apex-brand-report-kit/releases/tag/v0.1.2

@@ -8,7 +8,7 @@ import re
 from pathlib import Path
 from typing import Any
 
-SKILL_VERSION = "0.2.1"
+SKILL_VERSION = "0.3.0"
 RUNTIME_VERSION = "0.1.1"
 SCHEMA_VERSION = "1.0"
 
