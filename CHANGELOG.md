@@ -4,6 +4,12 @@ All notable changes follow [Keep a Changelog](https://keepachangelog.com/en/1.1.
 
 ## [Unreleased]
 
+## [0.2.1] - 2026-07-22
+
+### Added
+
+- Added a reusable compact dashboard-shell contract with identity, context, actions, one spacing rhythm, region-scoped refresh, root-scoped fullscreen, responsive toolbar behavior, and accessibility requirements.
+
 ## [0.2.0] - 2026-07-22
 
 ### Added
@@ -45,7 +51,8 @@ All notable changes follow [Keep a Changelog](https://keepachangelog.com/en/1.1.
 - Synthetic responsive example, portrait/landscape PDFs, rendered page images, and a typed XLSX workbook.
 - Automated structure, security, scaffold, schema, packaging, and artifact tests.
 
-[Unreleased]: https://github.com/andre-simplifica/oracle-apex-brand-report-kit/compare/v0.2.0...HEAD
+[Unreleased]: https://github.com/andre-simplifica/oracle-apex-brand-report-kit/compare/v0.2.1...HEAD
+[0.2.1]: https://github.com/andre-simplifica/oracle-apex-brand-report-kit/releases/tag/v0.2.1
 [0.2.0]: https://github.com/andre-simplifica/oracle-apex-brand-report-kit/releases/tag/v0.2.0
 [0.1.2]: https://github.com/andre-simplifica/oracle-apex-brand-report-kit/releases/tag/v0.1.2
 [0.1.1]: https://github.com/andre-simplifica/oracle-apex-brand-report-kit/releases/tag/v0.1.1

@@ -69,7 +69,7 @@ cp -R oracle-apex-brand-report-kit/skills/build-apex-brand-reports "${CODEX_HOME
 
 ### From a release
 
-Download `build-apex-brand-reports-0.2.0.zip` from the `v0.2.0` release, verify the published checksum, and extract the `build-apex-brand-reports` directory into `${CODEX_HOME:-$HOME/.codex}/skills/` or another trusted skill directory. No Python installation is required to let a capable agent read and follow the skill.
+Download `build-apex-brand-reports-0.2.1.zip` from the `v0.2.1` release, verify the published checksum, and extract the `build-apex-brand-reports` directory into `${CODEX_HOME:-$HOME/.codex}/skills/` or another trusted skill directory. No Python installation is required to let a capable agent read and follow the skill.
 
 ### From a local checkout
 
@@ -263,7 +263,7 @@ Report vulnerabilities through GitHub private vulnerability reporting; see [SECU
 ```bash
 python -m unittest discover -s tests -v
 python /path/to/skill-creator/scripts/quick_validate.py skills/build-apex-brand-reports
-python skills/build-apex-brand-reports/scripts/package_skill.py --output dist/build-apex-brand-reports-0.2.0.zip
+python skills/build-apex-brand-reports/scripts/package_skill.py --output dist/build-apex-brand-reports-0.2.1.zip
 ```
 
 CI validates the skill, schemas, scripts, initial scaffold, dry-run, update preservation, conflict detection, placeholders, security scan, synthetic theme, PDFs, XLSX, examples, and deterministic package.
@@ -272,7 +272,7 @@ See the recorded [validation evidence](tests/VALIDATION.md) and the two independ
 
 ## Compatibility
 
-| Surface | Status in v0.2.0 | Evidence |
+| Surface | Status in v0.2.1 | Evidence |
 |---|---|---|
 | Agent-native workflow without Python | Contract confirmed | Central skill, schemas, templates, adapters, and explicit manual review path |
 | Optional Python 3.10+ tooling | Confirmed by CI/local tests | Schema, scaffold, update, scan, package, and artifact tests |
