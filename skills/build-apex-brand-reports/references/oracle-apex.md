@@ -18,7 +18,7 @@ For an operational dashboard or visual modernization, read [operational-dashboar
 - Escape untrusted text with `APEX_ESCAPE.HTML`, escape attributes with `APEX_ESCAPE.HTML_ATTRIBUTE`, validate URL schemes, and whitelist enum-like configuration.
 - Keep CSS beneath a runtime root class and avoid global selectors.
 - Express reusable card tones through scoped CSS custom properties or semantic classes. Resolve those properties from the consumer theme; never hardcode the palette of an experience-reference application.
-- Bind JavaScript once per root, tolerate repeated initialization, and listen for `apexafterrefresh` without duplicating listeners.
+- Bind JavaScript once per root and tolerate repeated initialization. In APEX, subscribe to the jQuery `apexafterrefresh` event with a namespace (for example, `apexafterrefresh.abrk`); use the native DOM event only as a non-APEX fallback. Reinitialize both roots contained by the refreshed region and a refreshed element that is itself a runtime root, without duplicating listeners.
 - Return business-safe empty and error states. Log sanitized diagnostics through the consumer's approved mechanism; never expose raw exceptions.
 - Supply `p_toolbar_html` only for trusted, project-owned custom markup. Escape every dynamic label or attribute before composing it; never pass database or page-item text through as raw HTML.
 

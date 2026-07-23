@@ -178,6 +178,18 @@ class ScaffoldTests(unittest.TestCase):
         self.assertNotIn("http://", engine_body.lower())
         self.assertNotIn("https://", engine_body.lower())
 
+    def test_apex_partial_refresh_rebinds_runtime_roots_idempotently(self) -> None:
+        engine_body = (SKILL / "assets" / "runtime" / "plsql" / "report_engine.pkb.tpl").read_text(encoding="utf-8")
+        static_runtime = (SKILL / "assets" / "runtime" / "web" / "report-kit.js.tpl").read_text(encoding="utf-8")
+        apex_reference = (SKILL / "references" / "oracle-apex.md").read_text(encoding="utf-8")
+
+        self.assertIn('scope.matches("[data-abrk-root]")', engine_body)
+        self.assertIn('apexafterrefresh.abrk', engine_body)
+        self.assertIn('w.apex.jQuery(d)', engine_body)
+        self.assertIn('apexafterrefresh.abrkStatic', static_runtime)
+        self.assertIn('window.apex.jQuery(document)', static_runtime)
+        self.assertIn('jQuery `apexafterrefresh` event', apex_reference)
+
     def test_dry_run_does_not_write(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             fixture = Path(tmp) / "fixture"

@@ -108,10 +108,11 @@ create or replace package body {{ENGINE_PACKAGE}} as
         append_text(l_js, q'~
 <script data-abrk-runtime>
 (function(w,d){"use strict";if(w.ApexBrandReportKit){w.ApexBrandReportKit.init(d);return;}
-function roots(ctx){return Array.prototype.slice.call((ctx||d).querySelectorAll("[data-abrk-root]"));}
+function roots(ctx){var scope=ctx||d;var found=[];if(scope.matches&&scope.matches("[data-abrk-root]")){found.push(scope);}return found.concat(Array.prototype.slice.call(scope.querySelectorAll("[data-abrk-root]")));}
 function activate(root,button){var action=button.getAttribute("data-abrk-action");if(action==="print"||action==="pdf"){w.print();return;}if(action==="fullscreen"){if(!d.fullscreenElement&&root.requestFullscreen){root.requestFullscreen();}else if(d.exitFullscreen){d.exitFullscreen();}return;}if(action==="xlsx"||action==="csv"){var request="ABRK_EXPORT_"+action.toUpperCase();var event=new CustomEvent("abrkexport",{bubbles:true,cancelable:true,detail:{format:action,request:request}});if(!root.dispatchEvent(event)){return;}if(w.apex&&typeof w.apex.submit==="function"){w.apex.submit({request:request,showWait:true});}}}
 function bind(root){if(root.dataset.abrkBound==="true"){return;}root.dataset.abrkBound="true";root.addEventListener("click",function(event){var button=event.target.closest("[data-abrk-action]");if(button&&root.contains(button)){activate(root,button);}});}
-function init(ctx){roots(ctx).forEach(bind);}w.ApexBrandReportKit={init:init};init(d);if(!d.documentElement.dataset.abrkRefreshBound){d.documentElement.dataset.abrkRefreshBound="true";d.addEventListener("apexafterrefresh",function(event){init(event.target);});}}
+function init(ctx){roots(ctx).forEach(bind);}function bindRefresh(){if(d.documentElement.dataset.abrkRefreshBound){return;}d.documentElement.dataset.abrkRefreshBound="true";var refresh=function(event){init(event.target||d);};if(w.apex&&w.apex.jQuery){w.apex.jQuery(d).off("apexafterrefresh.abrk").on("apexafterrefresh.abrk",refresh);}else{d.addEventListener("apexafterrefresh",refresh);}}
+w.ApexBrandReportKit={init:init};init(d);bindRefresh();}
 )(window,document);
 </script>
 ~');
