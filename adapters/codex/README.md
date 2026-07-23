@@ -18,7 +18,7 @@ python -m pip install -r "${CODEX_HOME:-$HOME/.codex}/skills/build-apex-brand-re
 
 ## Install from a release
 
-Download `build-apex-brand-reports-0.2.1.zip`, verify the release and checksum, then extract its `build-apex-brand-reports` directory into `${CODEX_HOME:-$HOME/.codex}/skills/`. Restart or open a new Codex task so discovery refreshes. Install `requirements.txt` only if you choose to run the optional Python scripts.
+Download `build-apex-brand-reports-0.3.0.zip`, verify the release and checksum, then extract its `build-apex-brand-reports` directory into `${CODEX_HOME:-$HOME/.codex}/skills/`. Restart or open a new Codex task so discovery refreshes. Install `requirements.txt` only if you choose to run the optional Python scripts.
 
 ## Install locally or in a custom directory
 
@@ -32,7 +32,7 @@ Do not modify global Codex settings automatically. If a custom directory is not 
 ## Optional `AGENTS.md` fragment
 
 ```markdown
-For branded Oracle APEX reports, use `$build-apex-brand-reports`. Read the project instructions and confirm the existing domain package, APEX version, authorization, locks, and publication policy before changing files or the database. Keep engine, theme, document structure, and business content separate.
+For branded Oracle APEX application screens, dashboards, help experiences, and reports, use `$build-apex-brand-reports`. Read the project instructions and confirm the existing domain package, APEX version, authorization, locks, and publication policy before changing files or the database. Keep engine, theme, document structure, and business content separate.
 ```
 
 ## Invoke
@@ -43,7 +43,7 @@ Use $build-apex-brand-reports.
 Project Oracle APEX: /path/to/project
 Official visual identity source: /path/or/url
 Application and environment: app 100, DEV
-Goal: create a modal report with print, PDF, and XLSX.
+Goal: create a responsive application screen and a modal report with print, PDF, and XLSX.
 Existing business package: PK_REPORTS
 Desired RETURN CLOB function: FUNC_OPERATIONS_REPORT
 Access policy: CONFIRMED_AUTHORIZATION_SCHEME and organization scope

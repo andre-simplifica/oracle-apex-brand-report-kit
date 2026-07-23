@@ -1,4 +1,4 @@
 interface:
   display_name: "Build APEX Brand Reports"
-  short_description: "Build branded Oracle APEX reports safely"
-  default_prompt: "Use $build-apex-brand-reports to create a branded Oracle APEX report with print, PDF, and server-side exports through the agent-native workflow; treat Python scripts as optional tooling."
+  short_description: "Build branded Oracle APEX screens and reports"
+  default_prompt: "Use $build-apex-brand-reports to create a responsive branded Oracle APEX screen or report through the agent-native workflow; keep identity consumer-owned and treat Python scripts as optional tooling."

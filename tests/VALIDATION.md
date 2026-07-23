@@ -1,12 +1,17 @@
-# Validation evidence for v0.2.1
+# Validation evidence for v0.3.0
 
-Version 0.2.1 extends the operational-dashboard reference with a reusable compact shell and toolbar contract. It does not change the recorded synthetic runtime, PDF, or XLSX artifacts below. Repository tests verify that the shell guidance is packaged and routed while consumer-specific branding, permissions, Static IDs, and business actions remain local; consumer-side APEX runtime validation remains mandatory.
+Version 0.3.0 adds brand-neutral application-layout contracts for structured
+headers, responsive actions, simple filters, Home heroes, and package-rendered
+help. It does not change the recorded synthetic runtime, PDF, or XLSX artifacts
+below. Repository tests verify that the guidance is packaged and routed while
+consumer-specific identity, packages, pages, permissions, and business actions
+remain local; consumer-side APEX runtime validation remains mandatory.
 
 ## Automated
 
 ```text
 python -m unittest discover -s tests -v
-29 tests passed
+31 tests passed
 
 python skill-creator/scripts/quick_validate.py skills/build-apex-brand-reports
 Skill is valid!
@@ -16,6 +21,19 @@ OK: no sensitive-data patterns found
 ```
 
 The suite covers schemas, focus and text contrast, CSS-token injection, deterministic packaging, packaged optional dependencies, the no-Python runtime contract, dry-run, initial creation, overwrite protection, force, repeat creation rejection, update preservation, engine conflict detection, manifests, unresolved placeholders, native Dynamic Content architecture, PDFs, XLSX types, and sensitive-data patterns.
+
+## Neutral application-layout contract
+
+The packaged skill contains 37 files, including
+`references/application-layout-patterns.md`. The repository test asserts that
+this reference is routed from `SKILL.md`, packaged, and free of the originating
+consumer's package names, page IDs, CSS namespace, and identity.
+
+A fresh synthetic consumer dry-run planned 12 files without writing. The same
+configuration then produced and validated all 12 files successfully. The
+deterministic `build-apex-brand-reports-0.3.0.zip` generated during this
+validation has SHA-256
+`a7c9f9fdce8359ea6695259ac4c0d1512bfefb7b5311325ec4d90b4d62ff846d`.
 
 ## Browser
 

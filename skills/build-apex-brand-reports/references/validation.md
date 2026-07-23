@@ -12,6 +12,19 @@
 
 Test the flow `document loads -> toolbar action responds -> document remains readable` at desktop, tablet, mobile, and narrow widths. Verify page identity, meaningful DOM, no framework/error overlay, console health, keyboard focus, hover, disabled state, overflow, clipping, alignment, tables, cards, indicators, every header variant, footer, full-screen enabled/disabled, refresh idempotency, and reduced motion.
 
+For structured application headers, test wide, medium, tablet, mobile, and
+narrow states with primary actions allowed and denied. Verify that the logo
+surface keeps fixed dimensions across wide, square, tall, missing, and invalid
+assets; utility labels collapse before the toolbar wraps; and the primary action
+moves to a full-width lower row when the header no longer fits.
+
+For simple filters, verify that start, end, and search remain usable at every
+width and that optional selected-period context disappears before it would
+wrap. For Home heroes, verify the narrative, brand surface, and attention panel
+preserve reading order. For package-rendered help, verify one cohesive canvas,
+product-owned identity, native-host focus/close/footer behavior, long-content
+reachability, and no nested scrolling.
+
 ## Print, PDF, and spreadsheet
 
 Follow [print-and-pdf.md](print-and-pdf.md) and [excel-export.md](excel-export.md). Generate real files. Inspect every PDF page image and all workbook sheets. Test portrait, landscape, long table, accents, native types, unsafe strings, empty data, and safe errors.

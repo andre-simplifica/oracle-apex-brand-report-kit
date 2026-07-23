@@ -5,7 +5,7 @@ Use [`skills/build-apex-brand-reports/SKILL.md`](../../skills/build-apex-brand-r
 ## `CLAUDE.md` fragment
 
 ```markdown
-When asked to create, install, update, or validate branded Oracle APEX reports, read `/path/to/oracle-apex-brand-report-kit/skills/build-apex-brand-reports/SKILL.md` first and follow its routed references. Do not duplicate or rewrite the skill. Read this project's instructions before action and preserve the four-layer ownership boundary.
+When asked to create, install, update, or validate branded Oracle APEX application screens, dashboards, help experiences, or reports, read `/path/to/oracle-apex-brand-report-kit/skills/build-apex-brand-reports/SKILL.md` first and follow its routed references. Do not duplicate or rewrite the skill. Read this project's instructions before action and preserve the four-layer ownership boundary.
 ```
 
 If the environment supports project knowledge or reusable instruction files, add the skill directory without changing its contents. If it does not, tell the agent to read the central `SKILL.md` and only the references it routes for the task. The agent still needs file editing and command execution; browser, database, PDF, and spreadsheet capabilities are optional but required to claim their respective validations.

@@ -84,6 +84,28 @@ class SkillTests(unittest.TestCase):
         self.assertIn("data-dashboard-action", reference)
         self.assertIn("fullscreenchange", reference)
 
+    def test_application_layout_patterns_are_generic_routed_and_packaged(self) -> None:
+        skill = (SKILL / "SKILL.md").read_text(encoding="utf-8")
+        reference_path = SKILL / "references" / "application-layout-patterns.md"
+        reference = reference_path.read_text(encoding="utf-8")
+
+        self.assertIn("application-layout-patterns.md", skill)
+        self.assertRegex(reference, r"five\s+stable zones")
+        self.assertIn("make that primary action full width", reference)
+        self.assertRegex(reference, r"Hide it before it\s+would wrap")
+        self.assertIn("Package-rendered help canvas", reference)
+        self.assertIn("Immersive Home or landing hero", reference)
+        self.assertIn("data-layout-action", reference)
+
+        for consumer_specific in (
+            "Simplifica",
+            "PK_DASHBOARD",
+            "PKG_AJUDA",
+            "page 461",
+            "simpdash",
+        ):
+            self.assertNotIn(consumer_specific, reference)
+
     def test_optional_oracle_apex_echarts_integration_preserves_core_contract(self) -> None:
         skill = (SKILL / "SKILL.md").read_text(encoding="utf-8")
         reference = (SKILL / "references" / "oracle-apex-echarts.md").read_text(encoding="utf-8")
@@ -134,6 +156,7 @@ class SkillTests(unittest.TestCase):
                 self.assertIn("build-apex-brand-reports/requirements.txt", names)
                 self.assertIn("build-apex-brand-reports/assets/schemas/report-profile.schema.json", names)
                 self.assertIn("build-apex-brand-reports/references/operational-dashboard-visual-system.md", names)
+                self.assertIn("build-apex-brand-reports/references/application-layout-patterns.md", names)
 
 
 class SchemaAndThemeTests(unittest.TestCase):
@@ -214,7 +237,7 @@ class ScaffoldTests(unittest.TestCase):
             run_script("validate_scaffold.py", target)
             manifest = json.loads((target / ".apex-brand-report-kit" / "installation-manifest.json").read_text(encoding="utf-8"))
             self.assertEqual(manifest["runtime_version"], "0.1.1")
-            self.assertEqual(manifest["skill_version"], "0.2.1")
+            self.assertEqual(manifest["skill_version"], "0.3.0")
             self.assertEqual(manifest["theme"], {"id": "acme-harbor", "version": "1.0.0"})
             self.assertEqual(len(manifest["managed_files"]["engine"]), 4)
             self.assertEqual(len(manifest["managed_files"]["theme"]), 4)
